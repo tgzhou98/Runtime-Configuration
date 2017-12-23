@@ -1,0 +1,18 @@
+"dictionary  <C-X><C-K>
+set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+
+inoremap jk <ESC>
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+
+nmap gh ^
+nmap gl $
+vmap gh ^
+vmap gl $
+
+set cursorline              " 突出显示当前行
+
+
+nnoremap <F6> :g/^\s*$/d<CR> 
+
+set number
+set relativenumber
