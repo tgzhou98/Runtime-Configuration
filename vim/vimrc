@@ -30,6 +30,7 @@ Plugin 'gmarik/Vundle.vim'
 " ppets are separated from the engine. Add this if you want them:"
 " 
 "Plugin 'vim-scripts/taglist.vim'
+Plugin 'rizzatti/dash.vim'
 Plugin 'rsmenon/vim-mathematica'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'wookayin/vim-typora'
@@ -81,6 +82,7 @@ Plugin 'valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 "Bundle 'FuzzyFinder'  
 Plugin 'Shougo/unite.vim'
+
 " non-GitHub repos  
 "Plugin 'wincent/command-t'
 "Plugin 'tpope/vim-rvm'
@@ -283,10 +285,20 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=3
 let g:syntastic_tex_checkers = ['lacheck']
-let g:syntastic_python_checkers = ['pyflakes']
+let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_c_checkers = ['gcc']
 let g:syntastic_matlab_checkers = ['mlint']
+
+function! Py2()
+  let g:syntastic_python_python_exec = '/usr/local/bin/python2'
+endfunction
+
+function! Py3()
+  let g:syntastic_python_python_exec = '/usr/local/bin/python3'
+endfunction
+
+"Auto complete menu
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"	"回车即选中当前上下左右键的行为 会显示其他信息
@@ -937,9 +949,12 @@ nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 nnoremap <leader>gd :YcmCompleter GetDoc<CR>
 nnoremap <leader>gp :YcmCompleter GetParent<CR>
+nnoremap <leader>sd :YcmShowDetailedDiagnostic<CR>
 
 nnoremap <leader><F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
 
+"Dash search
+nmap <silent> <leader>d <Plug>DashSearch
 
 "conceallevel 0
 nnoremap <leader>sc :set conceallevel=0 <CR>
