@@ -1,4 +1,3 @@
-export TERM="xterm-256color"
 POWERLEVEL9K_MODE='awesome-patched'
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%{%F{249}%}\u250f"
@@ -52,34 +51,32 @@ POWERLEVEL9K_BATTERY_DISCONNECTED_VISUAL_IDENTIFIER_COLOR="249"
 POWERLEVEL9K_TIME_BACKGROUND="black"
 POWERLEVEL9K_TIME_FOREGROUND="249"
 POWERLEVEL9K_TIME_FORMAT="%D{%H:%M:%S} \UE12E"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=('status' 'os_icon' 'todo' 'context' 'dir' 'dir_writable' 'vcs')
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=('nvm' 'rvm' 'load' 'ram_joined' 'battery' 'time' 'background_jobs' 'disk_usage')
-
-POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
-
-ZSH_THEME="powerlevel9k/powerlevel9k"
-
-# If you come from bash you might have to change your $PATH.
-#export PATH=/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Users/zhoutiangang/.rvm/bin:PATH
-
-alias exfile='function f() {cd ~/Virtual\ Machine/Exchange\ Files/};f'
-alias mvexfile='function f() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};f'
-alias cpexfile='function f() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};f'
-alias myvm='function f() {ssh tgzhou@192.168.166.$1};f'
-alias maxwell='ssh tgzhou@162.105.151.19'
-alias pkunet='~/Tools/PkuGate/connect -u 1600011394'
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=('status' 'os_icon' 'todo' 'context' 'ssh' 'root_indicator' 'dir' 'dir_writable' 'vcs')
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=('nvm' 'rvm' 'load' 'ram_joined' 'disk_usage' 'battery' 'time' 'vi_mode' 'background_jobs' 'custom_pid')
 
 
 
 
 source ~/.bash_profile
+
+# 
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/zhoutiangang/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="agnoster"
+#ZSH_THEME="powerlevel9k/powerlevel9k"
+
+# Set list of themes to load
+# Setting this variable when ZSH_THEME=random
+# cause zsh load theme from this variable instead of
+# looking in ~/.oh-my-zsh/themes/
+# An empty array have no effect
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -98,13 +95,13 @@ export ZSH=/Users/zhoutiangang/.oh-my-zsh
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
- DISABLE_AUTO_TITLE="true"
+# DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
- ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
- COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -123,50 +120,19 @@ export ZSH=/Users/zhoutiangang/.oh-my-zsh
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
-	pip
-	autopep8
-	lein
-	vi-mode
-	autojump
-	brew
-	tmux
-	gnu-utils
-	zsh-users/zsh-syntax-highlighting)
+plugins=(
+  git
+  vi-mode
+  tmux
+  pip
+  autojump
+)
+
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
-#ZSH_THEME="robbyrussell"
 
-#########################################################
-#########################################################
-source $ZSH/oh-my-zsh.sh   #This line can't be commented
-#########################################################
-#########################################################
-#
-#source //Users/zhoutiangang/.oh-my-zsh/plugins/antigen/antigen.zsh
+source $ZSH/oh-my-zsh.sh
 
- ##Load the oh-my-zsh's library.
-#antigen use oh-my-zsh
-
- ##Bundles from the default repo (robbyrussell's oh-my-zsh).
-#antigen bundle git
-##antigen bundle heroku
-##antigen bundle pip
-##antigen bundle lein
-##antigen bundle command-not-found
-##antigen bundle autopep8
-
-## Syntax highlighting bundle.
-#antigen bundle zsh-users/zsh-syntax-highlighting
-
- ##Load the theme.
-#antigen theme bhilburn/powerlevel9k powerlevel9k
-
- ##Bundle 
-#antigen bundle vi-mode
-
- ##Tell Antigen that you're done.
-#antigen apply
 # User configuration
 
  export MANPATH="/usr/local/man:$MANPATH"
@@ -180,10 +146,9 @@ source $ZSH/oh-my-zsh.sh   #This line can't be commented
  else
    export EDITOR='mvim'
  fi
-#macvim on os
-alias macvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
+
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+ export ARCHFLAGS="-arch x86_64"
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -196,56 +161,30 @@ alias macvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
 # Example aliases
  alias zshconfig="mate ~/.zshrc"
  alias ohmyzsh="mate ~/.oh-my-zsh"
-# some alias settings, just for fun
+# 
+# 
 # -------------------------------------------------------------------
-#alias 'today=calendar -A 0 -f ~/calendar/calendar.mark | sort'
-alias today='calendar -A 0 -f /usr/share/calendar/calendar.computer| sort'
-alias dus='du -sckx * | sort -nr'
-alias adventure='emacs -batch -l dunnet'
-alias mailsize='du -hs ~/Library/mail'
-alias bk='cd $OLDPWD'
-alias ttop='top -ocpu -R -F -s 2 -n30'
-alias myvm='{ssh tgzhou@192.168.166.$1};f'
-alias tarx='function f() {tar -xvzf $1};f'
-alias tarc='function f() {tar -cvzf $1 $2};f'
-alias lh='ls -a | egrep "^\."'
+# make some commands (potentially) less destructive
+# -------------------------------------------------------------------
+alias rm='rm -i'
 
 # gnu alias
 alias ls='ls --color=auto'
 alias grep='ggrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias egrep='gegrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias fgrep='gfgrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias which='gwhich'
+# best which alias (show alias options)
+alias which='alias | gwhich --tty-only --read-alias --show-dot --show-tilde'
 
+# some alias
+alias today='calendar -A 0 -f /usr/share/calendar/calendar.computer| sort'
+alias dus='du -sckx * | sort -nr'
+alias adventure='emacs -batch -l dunnet'
+alias mailsize='du -hs ~/Library/mail'
+alias bk='cd $OLDPWD'
+alias ttop='top -ocpu -R -F -s 2 -n30'
+alias lh='ls -a | egrep "^\."'
 
-alias python=python3
-
-# -------------------------------------------------------------------
-# make some commands (potentially) less destructive
-# -------------------------------------------------------------------
-alias rm='rm -i'
-
-# -------------------------------------------------------------------
-# Git
-# -------------------------------------------------------------------
-alias ga='git add'
-alias gp='git push'
-alias gl='git log'
-alias gs='git status'
-alias gd='git diff'
-alias gm='git commit -m'
-alias gma='git commit -am'
-alias gb='git branch'
-alias gc='git checkout'
-alias gra='git remote add'
-alias grr='git remote rm'
-alias gpu='git pull'
-alias gcl='git clone'
-alias gta='git tag -a -m'
-alias gf='git reflog'
-
-# leverage an alias from the ~/.gitconfig
-alias gh='git hist'
 
 # -------------------------------------------------------------------
 # Oddball stuff
@@ -291,7 +230,3 @@ i() { cd "$(cat ~/.save_dir)" ; }
 
 #
 # finis
-
-
-
-
