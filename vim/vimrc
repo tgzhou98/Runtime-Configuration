@@ -130,7 +130,7 @@ let $PATH ='/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library
 
 set omnifunc=syntaxcomplete#Complete
 "set tags=/Users/zhoutiangang/Documents/Tools/tags
-set tags+=~/.vimtags
+set tags+=${HOME}/.vimtags
 "manuual
 "dictionary  <C-X><C-K>
 set dictionary+=/usr/share/dict/words
@@ -262,6 +262,8 @@ nnoremap ,bw :bw<CR>
 "ycm
 let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
 let g:ycm_python_binary_path = '/usr/local/bin/python3'
+"let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
+"let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
 			
 let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
 "let g:ctrlsf_default_root = 'cwd'
@@ -286,6 +288,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=3
 let g:syntastic_tex_checkers = ['lacheck']
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args='--ignore=E265'
 let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_c_checkers = ['gcc']
 let g:syntastic_matlab_checkers = ['mlint']
@@ -733,10 +736,10 @@ map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	exec "w"
 	if &filetype == 'c'
-		exec "!gcc-7 % -o %<"
+		exec "!gcc-7 % -g -o %<"
 		exec "! ./%<"
 	elseif &filetype == 'cpp'
-		exec "!g++-7 % -o %<"
+		exec "!g++-7 % -g -o %<"
 		exec "! ./%<"
 	elseif &filetype == 'java' 
 		exec "!javac %" 
@@ -930,10 +933,10 @@ nnoremap <C-l><C-c>  :lclose <CR>
 
 
 "quickfix window height
-au FileType qf call AdjustWindowHeight(3, 10)
-function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
+"au FileType qf call AdjustWindowHeight(3, 10)
+"function! AdjustWindowHeight(minheight, maxheight)
+  "exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+"endfunction
 
 
 "python syntax
@@ -949,6 +952,7 @@ nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 nnoremap <leader>gd :YcmCompleter GetDoc<CR>
 nnoremap <leader>gp :YcmCompleter GetParent<CR>
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>sd :YcmShowDetailedDiagnostic<CR>
 
 nnoremap <leader><F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic

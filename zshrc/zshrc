@@ -123,7 +123,6 @@ export ZSH=/Users/zhoutiangang/.oh-my-zsh
 plugins=(
   git
   vi-mode
-  tmux
   pip
   autojump
 )
@@ -173,11 +172,14 @@ alias ls='ls --color=auto'
 alias grep='ggrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias egrep='gegrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias fgrep='gfgrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias sed='gsed'
+alias awk='gawk'
 # best which alias (show alias options)
 alias which='alias | gwhich --tty-only --read-alias --show-dot --show-tilde'
 
+
 # some alias
-alias today='calendar -A 0 -f /usr/share/calendar/calendar.computer| sort'
+#alias today='calendar -A 0 -f /usr/share/calendar/calendar.computer| sort'
 alias dus='du -sckx * | sort -nr'
 alias adventure='emacs -batch -l dunnet'
 alias mailsize='du -hs ~/Library/mail'
@@ -203,7 +205,7 @@ function hiddenOff() { defaults write com.apple.Finder AppleShowAllFiles NO ; }
 
 
 # view man pages in Preview
-function pman() { ps=`mktemp -t manpageXXXX`.ps ; man -t $@ > "$ps" ; open "$ps" ; }
+function pman() { ps=`mktemp -t manpageXXXX`.ps ; man -t $@ > "$ps" ; open -a skim.app "$ps" ; }
 
 # apache tomcat functions
 function tomcatup() { /usr/local/tomcat/bin/startup.sh ; }
