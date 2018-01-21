@@ -30,6 +30,7 @@ Plugin 'gmarik/Vundle.vim'
 " ppets are separated from the engine. Add this if you want them:"
 " 
 "Plugin 'vim-scripts/taglist.vim'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'rizzatti/dash.vim'
 Plugin 'rsmenon/vim-mathematica'
 Plugin 'Shougo/vimproc.vim'
@@ -58,7 +59,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'indentLine.Vim'
-Plugin 'sheerun/vim-polyglot' "language packages
+"Plugin 'sheerun/vim-polyglot' "language packages
 Plugin 'hdima/python-syntax'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'majutsushi/tagbar'
@@ -261,10 +262,12 @@ nnoremap ,bd :bd<CR>
 nnoremap ,bw :bw<CR>    
 "ycm
 let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
-let g:ycm_python_binary_path = '/usr/local/bin/python3'
+"let g:ycm_python_binary_path = '/usr/local/bin/python3'
 "let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
 "let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
-			
+" Specify virtual enviroment 
+let g:ycm_python_binary_path = '/usr/bin/env python'
+		
 let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
 "let g:ctrlsf_default_root = 'cwd'
 let gLeaderlFold_docstring_preview = 1
@@ -485,21 +488,33 @@ au BufRead,BufNewFile *.tex set filetype=tex
 au! Syntax newlang source $VIM/ncl.vim
 au BufRead,BufNewFile *  setfiletype txt
 autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
-:inoremap ( ()<ESC>i
-:inoremap ) <c-r>=ClosePair(')')<CR>
-:inoremap { {}<ESC>i
-:inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-:inoremap ' ''<ESC>i
-:inoremap " ""<ESC>i
-function! ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
-endfunction
+
+"auto pair plugin fly mod
+let g:AutoPairsFlyMode = 1
+" <M-e> not work ,see verbose imap <M-e> , so as other <M-x>
+" has some bug, not use
+
+inoremap <buffer> <silent> ´ <C-R>=AutoPairsFastWrap()<CR>
+inoremap <buffer> <silent> π <C-R>=AutoPairsToggle()<CR>
+inoremap <buffer> <silent> ˜ <Esc>:call AutoPairsJump()<CR>
+inoremap <buffer> <silent> ∫ <C-R>=AutoPairsBackInsert()<CR>
+
+
+":inoremap ( ()<ESC>i
+":inoremap ) <c-r>=ClosePair(')')<CR>
+":inoremap { {}<ESC>i
+":inoremap } <c-r>=ClosePair('}')<CR>
+":inoremap [ []<ESC>i
+":inoremap ] <c-r>=ClosePair(']')<CR>
+":inoremap ' ''<ESC>i
+":inoremap " ""<ESC>i
+"function! ClosePair(char)
+	"if getline('.')[col('.') - 1] == a:char
+		"return "\<Right>"
+	"else
+		"return a:char
+	"endif
+"endfunction
 
 
 function!  SetTitle() 
@@ -942,7 +957,7 @@ nnoremap <C-l><C-c>  :lclose <CR>
 "python syntax
 "the polyglot python syntax are bad
 let OPTION_NAME = 1
-let g:polyglot_disabled = ['python']
+
 
 "YcmCompleter operation
 " 跳转到定义处
