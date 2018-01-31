@@ -103,14 +103,20 @@ source /opt/intel/mkl/bin/mklvars.sh intel64
 
 # setting alias
 
+alias vimconfig='vim ~/.vimrc'
+alias zshconfig='vim ~/.zshrc'
+alias bashconfig='vim ~/.bashrc'
+
 alias exfile='function func() {cd ~/Virtual\ Machine/Exchange\ Files/};func'
 alias mvexfile='function func() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};func'
 alias cpexfile='function func() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};func'
 alias myvm='function func() {ssh tgzhou@192.168.166.$1};func'
 alias maxwell='ssh tgzhou@162.105.151.19'
 alias maxwell_jupyter='ssh -NL 8989:localhost:8989 tgzhou@162.105.151.19'
+alias sunju_jupyter='ssh -NL 8989:localhost:8989 tgzhou@10.128.202.205'
 alias sunju='ssh tgzhou@10.128.202.205'
 alias pkunet='~/Tools/PkuGate/connect -u 1600011394'
+alias tree='tree -Ch'
 
 #terminating alias
 

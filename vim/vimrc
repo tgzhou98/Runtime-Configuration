@@ -59,7 +59,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'indentLine.Vim'
-"Plugin 'sheerun/vim-polyglot' "language packages
+Plugin 'sheerun/vim-polyglot' "language packages
 Plugin 'hdima/python-syntax'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'majutsushi/tagbar'
@@ -494,10 +494,17 @@ let g:AutoPairsFlyMode = 1
 " <M-e> not work ,see verbose imap <M-e> , so as other <M-x>
 " has some bug, not use
 
-inoremap <buffer> <silent> ´ <C-R>=AutoPairsFastWrap()<CR>
-inoremap <buffer> <silent> π <C-R>=AutoPairsToggle()<CR>
-inoremap <buffer> <silent> ˜ <Esc>:call AutoPairsJump()<CR>
-inoremap <buffer> <silent> ∫ <C-R>=AutoPairsBackInsert()<CR>
+" set left option as meta
+"inoremap <buffer> <silent> ´ <C-R>=AutoPairsFastWrap()<CR>
+"inoremap <buffer> <silent> π <C-R>=AutoPairsToggle()<CR>
+"inoremap <buffer> <silent> ˜ <Esc>:call AutoPairsJump()<CR>
+"inoremap <buffer> <silent> ∫ <C-R>=AutoPairsBackInsert()<CR>
+if has("gui_macvim")
+  let g:AutoPairsShortcutToggle     = 'π' " <m-p>
+  let g:AutoPairsShortcutFastWrap   = '∑' " <m-w>
+  let g:AutoPairsShortcutJump       = '∆' " <m-j>
+  let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
+endif
 
 
 ":inoremap ( ()<ESC>i
@@ -545,7 +552,7 @@ function!  SetTitle()
 		call append(line(".")+4, "\//#########################################################################") 
 		call append(line(".")+5, "#include<stdlib.h>")
 	elseif &filetype=='python' 
-		call setline(1, "\#!\/usr\/local\/bin\/python3.6")
+		call setline(1, "\#!\/usr\/bin\/env python")
 		call append(line("."), "##-*-coding:utf-8 -*-")
 		call append(line(".")+1, "\#########################################################################") 
 		call append(line(".")+2, "\#	 File Name   :  ".expand("%")) 
