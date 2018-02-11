@@ -266,7 +266,7 @@ let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
 "let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
 "let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
 " Specify virtual enviroment 
-let g:ycm_python_binary_path = '/usr/bin/env python'
+let g:ycm_python_binary_path = '/usr/bin/env python3'
 		
 let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
 "let g:ctrlsf_default_root = 'cwd'
@@ -482,7 +482,7 @@ set matchtime=3
 set smartindent
 set ma
 "autocmd FileType python set =pythoncomplete#Complete
-autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
+"autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
 au BufRead,BufNewFile *.ncl set filetype=ncl
 au BufRead,BufNewFile *.tex set filetype=tex
 au! Syntax newlang source $VIM/ncl.vim

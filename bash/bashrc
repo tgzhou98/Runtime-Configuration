@@ -15,7 +15,7 @@ alias python=python3
 # put the /usr/local/opt/coreutils/libexec/gnubin into the /etc/paths because 
 # /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
 # add nvidia cuda path , only work with apple-clang
-export PATH="$PATH:/usr/local/opt/llvm/bin:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS"
+export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS"
 
 
 ##################################################################################

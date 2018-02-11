@@ -151,6 +151,9 @@ endsnippet
 snippet report "Physics report contnet" b
 
 \documentclass{article}
+\usepackage[nottoc]{tocbibind} % show bib toc
+\usepackage{atbegshi,picture} % to add right corner footnote
+\usepackage{fancyhdr}  % change page number position
 \usepackage{minted}  %code syntax 
 \usepackage{bm} %math bold 
 \usepackage{mathrsfs} %mathrsfs
@@ -189,6 +192,26 @@ snippet report "Physics report contnet" b
 \newtheorem*{example}{Example}
 \usepackage{cleveref}  %must put in the last preamble
 
+% ---------------------------------------------------
+% add right corner footnote
+\AtBeginShipout{\AtBeginShipoutUpperLeft{%
+  \put(\dimexpr\paperwidth-1cm\relax,-1.5cm){\makebox[0pt][r]{\framebox{Peking University}}}%
+}}
+% ---------------------------------------------------
+
+% ---------------------------------------------------
+% change page number position
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyheadoffset{0cm}
+% \renewcommand{\headrulewidth}{0pt} 
+% \renewcommand{\footrulewidth}{0pt}
+% \fancyhead[R]{\thepage}
+% \fancypagestyle{plain}{%
+%    \fancyhf{}%
+%    \fancyhead[R]{\thepage}%
+% }
+% ----------------------------------------------------
 
 \begin{document}
 
@@ -255,6 +278,17 @@ circle of diameter $d$.
 */
 const double pi = 3.1415926535
 \end{minted}
+
+% Ths document is an example of BibTeX using in bibliography management. Three items 
+% are cited: \textit{The \LaTeX\ Companion} book \cite{latexcompanion}, the Einstein
+% journal paper \cite{einstein}, and the Donald Knuth's website \cite{knuthwebsite}. 
+% The \LaTeX\ related items are \cite{latexcompanion,knuthwebsite}. 
+
+\medskip
+ 
+\bibliographystyle{unsrt}
+\bibliography{${6:sample}}
+
 
 \end{document}
 
