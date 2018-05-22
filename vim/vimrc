@@ -28,7 +28,7 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+"Plugin 'gmarik/Vundle.vim'
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 "**************************************************
 " Track the engine.
@@ -36,6 +36,7 @@ Plugin 'gmarik/Vundle.vim'
 " 
 "Plugin 'vim-scripts/taglist.vim'
 
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'valloric/YouCompleteMe'
 Plugin 'yssl/QFEnter'
 Plugin 'xuhdev/SingleCompile' " compile plugin
@@ -84,7 +85,7 @@ Plugin 'Lokaltog/vim-easymotion'
 "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  "Html writting
 "Bundle 'thinca/vim-quickrun'
 "Bundle 'tpope/vim-rails.git'  
-Plugin 'nvie/vim-flake8'
+"Plugin 'nvie/vim-flake8'
 "Bundle 'TabBar'
 "Bundle 'L9'  
 
@@ -136,7 +137,7 @@ autocmd QuickFixCmdPost    l* nested lwindow
 
 
 "PATH
-let $PATH ='/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Applications/MATLAB_R2016b.app/bin:/Applications/MATLAB_R2016b.app/bin/maci64:PATH:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/zhoutiangang/.rvm/bin'
+let $PATH ='/usr/local/opt/llvm/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Applications/MATLAB_R2016b.app/bin:/Applications/MATLAB_R2016b.app/bin/maci64:$PATH:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/zhoutiangang/.rvm/bin'
 
 set omnifunc=syntaxcomplete#Complete
 "set tags=/Users/zhoutiangang/Documents/Tools/tags
@@ -271,12 +272,15 @@ nnoremap ,b :b<CR>
 nnoremap ,bd :bd<CR>    
 nnoremap ,bw :bw<CR>    
 "ycm
-let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
+
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 "let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
-"let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
+let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
+"
 " Specify virtual enviroment 
-let g:ycm_python_binary_path = '/usr/bin/env python3'
+let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
+"let g:ycm_server_python_interpreter ='/usr/bin/python'
+"let g:ycm_python_binary_path = '/usr/local/bin/python3'
 		
 let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
 "let g:ctrlsf_default_root = 'cwd'
@@ -300,10 +304,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=3
 let g:syntastic_tex_checkers = ['lacheck']
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_python_flake8_args='--ignore=E265'
 let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_c_checkers = ['gcc']
+let g:syntastic_perl_checkers = ['perl']
 let g:syntastic_matlab_checkers = ['mlint']
 
 function! Py2()
@@ -424,6 +429,10 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 "set guifont=Source\ Code\ Pro\ for\ Powerline:h15
 
+"cuda autofile set to cuda.cpp
+autocmd BufNewFile,BufRead *.cu set filetype=cpp
+
+
 "autocmd FileType python set =pythoncomplete#Complete
 "autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
 au BufRead,BufNewFile *.ncl set filetype=ncl
@@ -433,7 +442,7 @@ au BufRead,BufNewFile *  setfiletype txt
 autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
 
 "auto pair plugin fly mod
-let g:AutoPairsFlyMode = 1
+let g:AutoPairsFlyMode = 0
 " <M-e> not work ,see verbose imap <M-e> , so as other <M-x>
 " has some bug, not use
 
@@ -697,8 +706,12 @@ function! ChangeColorScheme()
 	endif  
 endfunction
 
-nmap <F6> :SCCompile<cr>
-nmap <F5> :SCCompileRun<cr>
+" only for C++, but this configure is global
+"nmap <F6> :SCCompileAF -std=c++14 -g3<cr>
+nmap <F5> :SCCompileRunAF -std=c++14 -O3<cr>
+
+"nmap <F6> :SCCompile <cr>
+nmap <F6> :SCCompileRun<cr>
 nmap <F7> :SCViewResult<cr>
 nmap <F10>:SCChooseCompiler<cr>
 
@@ -752,6 +765,8 @@ func! Run_gdb()
     exec "!cgdb %<"  
     exec "!del %<"  
 endfunction  
+
+
 
 "NERDtee设定
 let NERDChristmasTree=1
@@ -915,6 +930,9 @@ let OPTION_NAME = 1
 let g:polyglot_disabled = ['latex']  
 
 
+"Ycm autocompletion trigger
+let g:ycm_key_invoke_completion = '<C-Space>'
+
 "YcmCompleter operation
 " 跳转到定义处
 nnoremap <leader>gg :YcmCompleter GoTo<CR>
@@ -1038,4 +1056,7 @@ set showmatch
 set matchtime=3
 set smartindent
 set ma
+
+
+nnoremap <leader>m : set makeprg=make <CR>
 

@@ -1,6 +1,6 @@
 ##################################################################################
 # local alias
-alias python=python3
+alias python=python.app
 ##################################################################################
 
 
@@ -15,7 +15,14 @@ alias python=python3
 # put the /usr/local/opt/coreutils/libexec/gnubin into the /etc/paths because 
 # /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
 # add nvidia cuda path , only work with apple-clang
-export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS"
+#export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS"
+export PATH="${PATH}:/Users/zhoutiangang/anaconda3/bin"
+#export PATH="${PATH}"
+
+export PATH="/usr/local/opt/llvm/bin:${PATH}:/opt/local/bin"
+
+# java need to specify the classpath
+export CLASSPATH="${CLASSPATH}:${HOME}/Program/java"
 
 
 ##################################################################################
@@ -32,18 +39,29 @@ export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 # -I/usr/local/opt/lapack/include # is an option
 
-# add intel compiler path
-source /opt/intel/bin/compilervars.sh  intel64
+## add intel compiler path
+source /opt/intel/bin/compilervars.sh intel64
 
-# add intel mkl path
+## add intel mkl path
 source /opt/intel/mkl/bin/mklvars.sh intel64
+
+# add root config
+# this will delete the /usr/local/bin path 
+#pushd /usr/local >/dev/null; . bin/thisroot.sh; popd >/dev/null
+
+
 
 # due to SIP(System integrity protection)
 # In the latest release off OS-X using the DYLD_LIBRARY_PATH is not possible unless System Integrity Protection (SIP) is disabled.
 # $DYLD_LIBRARY_PATH not work
 # has to set -Wl,-rpath,
 # in ~/DYLD_LIBRARY_PATH_substitude.txt
+export DYLD_LIBRARY_PATH=/usr/local/opt/llvm/lib:${DYLD_LIBRARY_PATH}
+export LIBRARY_PATH=/usr/local/opt/llvm/lib:${LIBRARY_PATH}
 ##################################################################################
+
+# homebrew 
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 
 #PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 #Source bash_profile to set JAVA_HOME and add it to the PATH because for some reason is not being picked up
@@ -103,6 +121,9 @@ source /opt/intel/mkl/bin/mklvars.sh intel64
 
 # setting alias
 
+alias gcc='gcc-7'
+alias g++='g++-7'
+
 alias vimconfig='vim ~/.vimrc'
 alias zshconfig='vim ~/.zshrc'
 alias bashconfig='vim ~/.bashrc'
@@ -111,10 +132,12 @@ alias exfile='function func() {cd ~/Virtual\ Machine/Exchange\ Files/};func'
 alias mvexfile='function func() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};func'
 alias cpexfile='function func() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};func'
 alias myvm='function func() {ssh tgzhou@192.168.166.$1};func'
-alias maxwell='ssh tgzhou@162.105.151.19'
-alias maxwell_jupyter='ssh -NL 8989:localhost:8989 tgzhou@162.105.151.19'
-alias sunju_jupyter='ssh -NL 8989:localhost:8989 tgzhou@10.128.202.205'
-alias sunju='ssh tgzhou@10.128.202.205'
+alias maxwell='ssh -X tgzhou@162.105.151.19'
+alias maxwell_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.19'
+alias maxwell_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.19'
+alias sunju_jupyter='ssh -NL 8989:localhost:8989 tgzhou@172.31.58.38'
+alias sunju_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@172.31.58.38'
+alias sunju='ssh -X tgzhou@172.31.58.38'
 alias pkunet='~/Tools/PkuGate/connect -u 1600011394'
 alias tree='tree -Ch'
 
@@ -366,4 +389,6 @@ httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grab
 #   e.g.: hdiutil create -size 10m 10MB.dmg
 #   the above create files that are almost all zeros - if random bytes are desired
 #   then use: ~/Dev/Perl/randBytes 1048576 > 10MB.dat
+
+
 
