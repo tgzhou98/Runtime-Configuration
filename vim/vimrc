@@ -20,78 +20,98 @@
 "
 "%  match bucket
 "use :edit to exit X mode
-set nocompatible              " required
-filetype off                  " required
+set nocompatible              " require
+
+"Plug is replace vundle 
+"Hat off to vundle , byebye!!!!!!!!!!!!!!
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
+
+"filetype off                  " required
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+"set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 " let Vundle manage Vundle, required
 "Plugin 'gmarik/Vundle.vim'
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 "**************************************************
-" Track the engine.
-" ppets are separated from the engine. Add this if you want them:"
-" 
-"Plugin 'vim-scripts/taglist.vim'
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'valloric/YouCompleteMe'
-Plugin 'yssl/QFEnter'
-Plugin 'xuhdev/SingleCompile' " compile plugin
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'rizzatti/dash.vim'
-Plugin 'rsmenon/vim-mathematica'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'wookayin/vim-typora'
-Plugin 'xolox/vim-easytags'
-Plugin 'xolox/vim-misc'
-Plugin 'kshenoy/vim-signature'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'shime/vim-livedown'
-"Plugin 'JamshedVesuna/vim-markdown-preview'
-"Plugin 'lazywei/vim-matlab'
-"Plugin 'vim-scripts/Conque-GDB'
-Plugin 'tpope/vim-surround'
-Plugin 'lervag/vimtex'
-Plugin 'vim-latex/vim-latex'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'vim-scripts/matchit.zip'
-Plugin 'tell-k/vim-autopep8'
-Plugin 'ervandew/supertab' 
-Plugin 'honza/vim-snippets'
-Plugin 'SirVer/ultisnips'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-"Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'indentLine.Vim'
-Plugin 'sheerun/vim-polyglot' "language packages
-Plugin 'hdima/python-syntax'
-Plugin 'dyng/ctrlsf.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'vim-airline/vim-airline'
-"Plugin 'Lokaltog/vim-powerline'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'terryma/vim-expand-region'
-Plugin 'tpope/vim-fugitive'  
-Plugin 'Lokaltog/vim-easymotion'  
+call plug#begin('~/.vim/plugged')
+
+"Plug 'VundleVim/Vundle.vim'
+Plug 'Shougo/echodoc.vim'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'tpope/vim-unimpaired'
+Plug 'w0rp/ale'
+Plug 'Yggdroot/LeaderF'
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-syntax'
+Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
+Plug 'sgur/vim-textobj-parameter'
+
+"Plug 'rsmenon/vim-mathematica'
+Plug 'Shougo/vimproc.vim'
+Plug 'wookayin/vim-typora'
+"Plug 'xolox/vim-easytags'
+"Plug 'xolox/vim-misc'
+Plug 'yssl/QFEnter'
+Plug 'valloric/YouCompleteMe'
+Plug 'xuhdev/SingleCompile' " compile Plug
+"Plug 'jiangmiao/auto-pairs'
+Plug 'rizzatti/dash.vim'
+Plug 'kshenoy/vim-signature'
+Plug 'scrooloose/nerdcommenter'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'shime/vim-livedown'
+"Plug 'JamshedVesuna/vim-markdown-preview'
+"Plug 'lazywei/vim-matlab'
+"Plug 'vim-scripts/Conque-GDB'
+Plug 'tpope/vim-surround'
+Plug 'lervag/vimtex'
+Plug 'vim-latex/vim-latex'
+Plug 'flazz/vim-colorschemes'
+Plug 'terryma/vim-multiple-cursors'
+"Plug 'vim-scripts/matchit.zip'
+Plug 'tell-k/vim-autopep8'
+Plug 'ervandew/supertab' 
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'scrooloose/nerdtree'
+"Plug 'Xuyuanp/nerdtree-git-Plug'
+"Plug 'jistr/vim-nerdtree-tabs'
+"Plug 'indentLine.Vim'
+Plug 'sheerun/vim-polyglot' "language packages
+Plug 'hdima/python-syntax'
+Plug 'dyng/ctrlsf.vim'
+"Plug 'majutsushi/tagbar'
+Plug 'vim-airline/vim-airline'
+"Plug 'Lokaltog/vim-powerline'
+Plug 'tmhedberg/SimpylFold'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'kien/rainbow_parentheses.vim'
+"Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'terryma/vim-expand-region'
+Plug 'tpope/vim-fugitive'  
+Plug 'Lokaltog/vim-easymotion'  
 "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  "Html writting
 "Bundle 'thinca/vim-quickrun'
 "Bundle 'tpope/vim-rails.git'  
-"Plugin 'nvie/vim-flake8'
+"Plug 'nvie/vim-flake8'
 "Bundle 'TabBar'
 "Bundle 'L9'  
 
-Plugin 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
 "Bundle 'FuzzyFinder'  
-Plugin 'Shougo/unite.vim'
+Plug 'Shougo/unite.vim'
 
 " non-GitHub repos  
 "Plugin 'wincent/command-t'
@@ -100,16 +120,18 @@ Plugin 'Shougo/unite.vim'
 "Bundle 'file:///Users/gmarik/path/to/plugin'  
 " ...  
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+"call vundle#end()            " required
+"filetype plugin indent on    " required
 
-filetype on
-filetype plugin on
-filetype indent on
+"filetype on
+"filetype plugin on
+"filetype indent on
+
+call plug#end()
+
+"
 let g:ctrlsf_debug_mode = 1
 "***********************************************************************
-let g:ycm_keep_logfiles = 1
-let g:ycm_log_level = 'debug'
 "Sometimes it is helpful if your working directory is always the same as the file you are editing. To achieve this, put the following in your vimrc:
 set mouse=n
 set ttymouse=xterm2
@@ -150,7 +172,97 @@ function! SpellLocalCheck()
 	setlocal spell spelllang=en_us
 endfunction
 "
-"
+"------------------------------------------------------
+"ale setting
+let g:ale_linters_explicit = 0 " only run linter you specified
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+
+let b:ale_fixers = { 
+			\ 'python': ['autopep8'],
+			\ 'cpp': ['clang-format'],
+			\}
+let g:ale_c_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_clang_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+
+let g:ale_sign_error = "\ue009\ue009"
+hi! clear SpellBad
+hi! clear SpellCap
+hi! clear SpellRare
+hi! spellbad gui=undercurl guisp=red
+hi! spellcap gui=undercurl guisp=blue
+hi! spellrare gui=undercurl guisp=magenta
+"------------------------------------------------------
+
+"------------------------------------------------------
+"For leaderF python version problem
+if has('python3')
+    command! -nargs=1 Py py3 <args>
+    set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
+    set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
+else
+    command! -nargs=1 Py py <args>
+    set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
+    set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
+endif
+
+let g:Lf_ShortcutF = '<c-p>'
+let g:Lf_ShortcutB = '<m-n>'
+noremap <c-m> :LeaderfMru<cr>
+noremap <m-p> :LeaderfFunction!<cr>
+noremap <m-n> :LeaderfBuffer<cr>
+noremap <m-m> :LeaderfTag<cr>
+let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
+
+let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_WindowHeight = 0.30
+let g:Lf_CacheDirectory = expand('~/.vim/cache')
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp = 1
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+"------------------------------------------------------
+
+"------------------------------------------------------
+"Only setting for echodoc
+set noshowmode
+autocmd VimEnter * EchoDocEnable
+"------------------------------------------------------
+
+"------------------------------------------------------
+" gutentags
+" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" 检测 ~/.cache/tags 不存在就新建
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+"------------------------------------------------------
+
+
+"------------------------------------------------------
 "vimtex
 
 let g:vimtex_quickfix_enabled = 0
@@ -179,14 +291,16 @@ let g:vimtex_latexmk_options = '-pdf -pdflatex="xelatex --shell-escape %O %S " -
 "********************************************************
 
 
+"Ctrlp is outoff date, thank your help!!!!!!
+"
 "ctrlp 改变最大窗口数
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip 
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_match_window      = 'results:20'
-nmap <C-t> :CtrlPTag<CR> 
-nmap <C-m> :CtrlPMRUFiles<CR> 
-nmap <C-b> :CtrlPBuffer<CR>
-nmap <leader><C-t> :CtrlPBufTag<CR> 
+"set wildignore+=*/tmp/*,*.so,*.swp,*.zip 
+"let g:ctrlp_working_path_mode = 'ra'
+"let g:ctrlp_match_window      = 'results:20'
+"nmap <C-t> :CtrlPTag<CR> 
+"nmap <C-m> :CtrlPMRUFiles<CR> 
+"nmap <C-b> :CtrlPBuffer<CR>
+"nmap <leader><C-t> :CtrlPBufTag<CR> 
 
 "commadtmax file
 let g:CommandTMaxHeight=20
@@ -232,7 +346,7 @@ inoremap jk <ESC>
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 autocmd! FileType python,c,cpp,tex,fortran,ncl noremap <buffer> <F3> :call Autopep8()<CR>
 
-nmap <leader><F6> :SyntasticCheck<CR>
+"nmap <leader><F6> :SyntasticCheck<CR>
 "****Leader************************************************
 
 "Latex 补全
@@ -264,15 +378,23 @@ let g:Tex_Debug=1
 
 
 
-"bufferfile shortcut
-nnoremap ,bp :bp<CR>    
-nnoremap ,bn :bn<CR>    
-nnoremap ,sb :sb<CR>    
-nnoremap ,b :b<CR>    
-nnoremap ,bd :bd<CR>    
-nnoremap ,bw :bw<CR>    
-"ycm
+"------------------------------------------------------------
+"This is solve by unimpaired.vim, my code is not used
+""bufferfile shortcut
+"nnoremap ,bp :bp<CR>    
+"nnoremap ,bn :bn<CR>    
+"nnoremap ,sb :sb<CR>    
+"nnoremap ,b :b<CR>    
+"nnoremap ,bd :bd<CR>    
+"nnoremap ,bw :bw<CR>    
+"------------------------------------------------------------
 
+
+
+"------------------------------------------------------------
+"Powerful ycm !!!
+"set runtimepath+=~/.vim/bundle/YouCompleteMe
+"filetype plugin indent on
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 "let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
 let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
@@ -286,38 +408,53 @@ let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
 "let g:ctrlsf_default_root = 'cwd'
 let gLeaderlFold_docstring_preview = 1
 " 引入，可以补全系统，以及python的第三方包
-let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+let g:ycm_global_ycm_extra_conf = "~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 "直接触发自动补全
-"
-let g:ycm_key_invoke_completion = ''
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = '<c-Space>'
+set completeopt=menu,menuone
+
+noremap <c-Space> <NOP>
+
+let g:ycm_semantic_triggers =  {
+           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+           \ 'cs,lua,javascript': ['re!\w{2}'],
+           \ }
+
 
 nnoremap <buffer> ,st :call SetTitle()<cr>
 nnoremap <buffer> ,td :call TitleDet()<cr>
 
-"Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=3
-let g:syntastic_tex_checkers = ['lacheck']
-let g:syntastic_python_checkers = ['pyflakes']
-let g:syntastic_python_flake8_args='--ignore=E265'
-let g:syntastic_cpp_checkers = ['gcc']
-let g:syntastic_c_checkers = ['gcc']
-let g:syntastic_perl_checkers = ['perl']
-let g:syntastic_matlab_checkers = ['mlint']
+""Syntastic is outdate 
+" Thank you so much
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_loc_list_height=3
+"let g:syntastic_tex_checkers = ['lacheck']
+"let g:syntastic_python_checkers = ['pyflakes']
+"let g:syntastic_python_flake8_args='--ignore=E265'
+"let g:syntastic_cpp_checkers = ['gcc']
+"let g:syntastic_c_checkers = ['gcc']
+"let g:syntastic_perl_checkers = ['perl']
+"let g:syntastic_matlab_checkers = ['mlint']
 
-function! Py2()
-  let g:syntastic_python_python_exec = '/usr/local/bin/python2'
-endfunction
+"function! Py2()
+  "let g:syntastic_python_python_exec = '/usr/local/bin/python2'
+"endfunction
 
-function! Py3()
-  let g:syntastic_python_python_exec = '/usr/local/bin/python3'
-endfunction
+"function! Py3()
+  "let g:syntastic_python_python_exec = '/usr/local/bin/python3'
+"endfunction
 
 "Auto complete menu
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
@@ -330,31 +467,7 @@ inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 
 
 "inoremap <leader><leader> <C-x><C-o>
-"let g:ycm_global_ycm_extra_conf = '~/.vim/data/ycm/.ycm_extra_conf.py'
-" 不显示开启vim时检查ycm_extra_conf文件的信息  
-let g:ycm_confirm_extra_conf=0
-" 开启基于tag的补全，可以在这之后添加需要的标签路径  
-let g:ycm_collect_simulatedidentifiers_from_tags_files=1
-"注释和字符串中的文字也会被收入补全
-let g:ycm_collect_identifiers_from_comments_and_strings = 0
-" 输入第2个字符开始补全
-let g:ycm_min_num_of_chars_for_completion=2
-" 禁止缓存匹配项,每次都重新生成匹配项
-let g:ycm_cache_=0
-" 开启语义补全
-let g:ycm_seed_identifiers_with_syntax=1	
-"在注释输入中也能补全
-let g:ycm_complete_in_comments = 1
-"在字符串输入中也能补全
-let g:ycm_complete_in_strings = 1
-" 设置在下面几种格式的文件上屏蔽ycm
-let g:ycm_filetype_blacklist = {
-      \ 'tagbar' : 1,
-      \ 'nerdtree' : 1,
-      \}
-"autocomplete
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_key_invoke_completion = ''
+
 "custom keys
 let mapleader=" "
 "
@@ -384,29 +497,29 @@ autocmd FileType python set =python3complete#Complete
 "" I have poly 
 "------------Start Python PEP 8 stuff----------------
 " Number of spaces that a pre-existing tab is equal to.
-au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
-"spaces for indents
-au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
-au BufRead,BufNewFile *.py,*.pyw set expandtab
-au BufRead,BufNewFile *.py set softtabstop=4
-" Use the below highlight group when displaying bad whitespace is desired.
-highlight BadWhitespace ctermbg=red guibg=red
-" Display tabs at the beginning of a line in Python mode as bad.
-au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-" Make trailing whitespace be flagged as bad.
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-" Wrap text after a certain number of characters
-au BufRead,BufNewFile *.py,*.pyw, set textwidth=100
-" Use UNIX (\n) line endings.
-au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
-" Set the default file encoding to UTF-8:
-set encoding=utf-8
-" Keep indentation level from previous line:
-autocmd! FileType python set autoindent
-" make backspaces more powerfull
-set backspace=indent,eol,start
-"Folding based on indentation:
-autocmd! FileType python set foldmethod=indent
+"au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
+""spaces for indents
+"au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
+"au BufRead,BufNewFile *.py,*.pyw set expandtab
+"au BufRead,BufNewFile *.py set softtabstop=4
+"" Use the below highlight group when displaying bad whitespace is desired.
+"highlight BadWhitespace ctermbg=red guibg=red
+"" Display tabs at the beginning of a line in Python mode as bad.
+"au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+"" Make trailing whitespace be flagged as bad.
+"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+"" Wrap text after a certain number of characters
+"au BufRead,BufNewFile *.py,*.pyw, set textwidth=100
+"" Use UNIX (\n) line endings.
+"au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+"" Set the default file encoding to UTF-8:
+"set encoding=utf-8
+"" Keep indentation level from previous line:
+"autocmd! FileType python set autoindent
+"" make backspaces more powerfull
+"set backspace=indent,eol,start
+""Folding based on indentation:
+"autocmd! FileType python set foldmethod=indent
 "use space to open folds
 "nnoremap <leader> za 
 
@@ -441,24 +554,32 @@ au! Syntax newlang source $VIM/ncl.vim
 au BufRead,BufNewFile *  setfiletype txt
 autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
 
+"------------------------------------------------------------------------
+"Auto pair
+"Bye bye auto pair
+"I need echodoc
+"
 "auto pair plugin fly mod
-let g:AutoPairsFlyMode = 0
+"let g:AutoPairsFlyMode = 0
 " <M-e> not work ,see verbose imap <M-e> , so as other <M-x>
 " has some bug, not use
+
 
 " set left option as meta
 "inoremap <buffer> <silent> ´ <C-R>=AutoPairsFastWrap()<CR>
 "inoremap <buffer> <silent> π <C-R>=AutoPairsToggle()<CR>
 "inoremap <buffer> <silent> ˜ <Esc>:call AutoPairsJump()<CR>
 "inoremap <buffer> <silent> ∫ <C-R>=AutoPairsBackInsert()<CR>
-if has("gui_macvim")
-  let g:AutoPairsShortcutToggle     = 'π' " <m-p>
-  let g:AutoPairsShortcutFastWrap   = '´' " <m-e>
-  let g:AutoPairsShortcutJump       = '˜' " <m-n>
-  let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
-endif
+"if has("gui_macvim")
+  "let g:AutoPairsShortcutToggle     = 'π' " <m-p>
+  "let g:AutoPairsShortcutFastWrap   = '´' " <m-e>
+  "let g:AutoPairsShortcutJump       = '˜' " <m-n>
+  "let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
+"endif
+"------------------------------------------------------------------------
 
-
+"------------------------------------------------------------------------
+"Pair function, not use
 ":inoremap ( ()<ESC>i
 ":inoremap ) <c-r>=ClosePair(')')<CR>
 ":inoremap { {}<ESC>i
@@ -474,7 +595,7 @@ endif
 		"return a:char
 	"endif
 "endfunction
-
+"------------------------------------------------------------------------
 
 function!  SetTitle() 
 		if &filetype == 'sh' 
@@ -930,25 +1051,51 @@ let OPTION_NAME = 1
 let g:polyglot_disabled = ['latex']  
 
 
+"let g:ycm_global_ycm_extra_conf = '~/.vim/data/ycm/.ycm_extra_conf.py'
+" 不显示开启vim时检查ycm_extra_conf文件的信息  
+"let g:ycm_confirm_extra_conf=0
+"" 开启基于tag的补全，可以在这之后添加需要的标签路径  
+"let g:ycm_collect_simulatedidentifiers_from_tags_files=1
+""注释和字符串中的文字也会被收入补全
+"let g:ycm_collect_identifiers_from_comments_and_strings = 0
+"" 输入第2个字符开始补全
+"let g:ycm_min_num_of_chars_for_completion=2
+"" 禁止缓存匹配项,每次都重新生成匹配项
+"let g:ycm_cache_=0
+"" 开启语义补全
+"let g:ycm_seed_identifiers_with_syntax=1	
+""在注释输入中也能补全
+"let g:ycm_complete_in_comments = 1
+""在字符串输入中也能补全
+"let g:ycm_complete_in_strings = 1
+"" 设置在下面几种格式的文件上屏蔽ycm
+"let g:ycm_filetype_blacklist = {
+      "\ 'tagbar' : 1,
+      "\ 'nerdtree' : 1,
+      "\}
+""autocomplete
+"let g:ycm_autoclose_preview_window_after_completion=1
+"let g:ycm_key_invoke_completion = ''
+
 "Ycm autocompletion trigger
-let g:ycm_key_invoke_completion = '<C-Space>'
+"let g:ycm_key_invoke_completion = '<C-Space>'
 
 "YcmCompleter operation
 " 跳转到定义处
-nnoremap <leader>gg :YcmCompleter GoTo<CR>
-nnoremap <leader>gf :YcmCompleter FixIt<CR>
-nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
-nnoremap <leader>gt :YcmCompleter GetType<CR>
-nnoremap <leader>gdc :YcmCompleter GetDoc<CR>
-nnoremap <leader>gp :YcmCompleter GetParent<CR>
-nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>gdf :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>gdl :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>rr :YcmCompleter RefactorRename<CR>
-nnoremap <leader>sd :YcmShowDetailedDiagnostic<CR>
+"nnoremap <leader>gg :YcmCompleter GoTo<CR>
+"nnoremap <leader>gf :YcmCompleter FixIt<CR>
+"nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
+"nnoremap <leader>gt :YcmCompleter GetType<CR>
+"nnoremap <leader>gdc :YcmCompleter GetDoc<CR>
+"nnoremap <leader>gp :YcmCompleter GetParent<CR>
+"nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+"nnoremap <leader>gdf :YcmCompleter GoToDefinition<CR>
+"nnoremap <leader>gdl :YcmCompleter GoToDeclaration<CR>
+"nnoremap <leader>rr :YcmCompleter RefactorRename<CR>
+"nnoremap <leader>sd :YcmShowDetailedDiagnostic<CR>
 
 
-nnoremap <leader><F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
+"nnoremap <leader><F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
 
 "Dash search
 nmap <silent> <leader>d <Plug>DashSearch
@@ -1056,6 +1203,11 @@ set showmatch
 set matchtime=3
 set smartindent
 set ma
+"-------------------------------------------------
+"This set meta key
+set macmeta
+"-------------------------------------------------
+
 
 
 nnoremap <leader>m : set makeprg=make <CR>
