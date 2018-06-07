@@ -46,9 +46,8 @@ endif
 call plug#begin('~/.vim/plugged')
 
 "Plug 'VundleVim/Vundle.vim'
-
+Plug 'mhinz/vim-signify'
 Plug 'skywind3000/asyncrun.vim'
-
 Plug 'Shougo/echodoc.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-unimpaired'
@@ -218,10 +217,10 @@ else
 endif
 
 let g:Lf_ShortcutF = '<c-p>'
-let g:Lf_ShortcutB = '<m-n>'
+let g:Lf_ShortcutB = '<m-b>'
 noremap <c-m> :LeaderfMru<cr>
 noremap <m-p> :LeaderfFunction!<cr>
-noremap <m-n> :LeaderfBuffer<cr>
+noremap <m-b> :LeaderfBuffer<cr>
 noremap <m-m> :LeaderfTag<cr>
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
@@ -233,6 +232,11 @@ let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp = 1
 let g:Lf_StlColorscheme = 'powerline'
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+"------------------------------------------------------
+
+"------------------------------------------------------
+"Signify Diff
+noremap <m-d> :SignifyDiff<cr>
 "------------------------------------------------------
 
 "------------------------------------------------------
