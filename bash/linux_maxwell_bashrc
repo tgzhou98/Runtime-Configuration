@@ -1,80 +1,57 @@
-##################################################################################
-# local alias
-alias python=python.app
-##################################################################################
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+
+# cuda path
 
 
-##################################################################################
-#general path set
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# delete the rvm path
-
-# The default path is in /private/etc/paths
-# /etc/profile load this
-# put the /usr/local/opt/coreutils/libexec/gnubin into the /etc/paths because 
-# /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
-# add nvidia cuda path , only work with apple-clang
-#export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS"
-export PATH="${PATH}:/Users/zhoutiangang/anaconda3/bin"
-#export PATH="${PATH}"
-
-export PATH="/usr/local/opt/llvm@5/bin:${PATH}:/opt/local/bin"
-
-# java need to specify the classpath
-export CLASSPATH="${CLASSPATH}:${HOME}/Program/java"
+export PATH=/home/tgzhou/bin/:/home/tgzhou/Tools/lammps-11Aug17/tools/phonon:/home/tgzhou/.local/bin:/home/tgzhou/.local/ActivePerl-5.24/site/bin:/home/tgzhou/.local/ActivePerl-5.24/bin:${HOME}/anaconda3/bin:${HOME}/.local/ack2/bin:/software/anaconda3/bin:/usr/local/cuda-8.0/bin:${HOME}/Tools/vasp_visual/vtstscripts-933:${HOME}/Tools/deepmd_script:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:/usr/local/cuda-8.0/extras/CUPTI/lib64:/home/tgzhou/.local/lib:/home/tgzhou/.local/jpeg/lib:/home/tgzhou/Tools/lammps-11Aug17/tools/phonon/dep/libtricubic-master/tricubic-1.0/install_dir/lib:/home/tgzhou/Tools/lammps-11Aug17/tools/phonon/dep/spglib-master/build/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=/home/tgzhou/.local/lib:$LIBRARY_PATH
+export MANPATH=/home/tgzhou/.local/ActivePerl-5.24/site/man:/home/tgzhou/.local/ActivePerl-5.24/man:$MANPATH
+export CPATH=${HOME}/.local/include:${CPATH}
 
 
-##################################################################################
+# compiler path
+export LDFLAGS="-L/home/tgzhou/.local/lib"
+export CPPFLAGS="-I/home/tgzhou/.local/include"
 
-##################################################################################
-#  Compile and link path set
-
-##################################################################################
-# Add llvm 
-# Add lapack fortran library # delete
-# Add openblas for optimization of blas and lapack # delete
-#export LDFLAGS="-L/usr/local/opt/llvm@5/lib -Wl,-rpath,/usr/local/opt/llvm@5/lib"
-# -L/usr/local/opt/lapack/lib  # is an option
-
-#export CPPFLAGS="-I/usr/local/opt/llvm@5/include"
-# -I/usr/local/opt/lapack/include # is an option
-##################################################################################
-
-## add intel compiler path
-source /opt/intel/bin/compilervars.sh intel64
-
-## add intel mkl path
-source /opt/intel/mkl/bin/mklvars.sh intel64
-
-# add root config
-# this will delete the /usr/local/bin path 
-#pushd /usr/local >/dev/null; . bin/thisroot.sh; popd >/dev/null
+#ulimit -s unlimited
 
 
+PATH=${HOME}/Research/DeepMD/deepmd-kit-smooth/deepmd-kit-master/deepmd_smooth_root/bin:${HOME}/Research/DeepMD/deeppot.para.1/data/raw/:${HOME}/.local/texlive/2017/bin/x86_64-linux:${HOME}/Tools/lammps-11Aug17/bin:$PATH:/software/bin
 
-# due to SIP(System integrity protection)
-# In the latest release off OS-X using the DYLD_LIBRARY_PATH is not possible unless System Integrity Protection (SIP) is disabled.
-# $DYLD_LIBRARY_PATH not work
-# has to set -Wl,-rpath,
-# in ~/DYLD_LIBRARY_PATH_substitude.txt
+# intel compiler already added
+# add intel compiler path
+#source /opt/intel/bin/compilervars.sh intel64
 
+# add intel mkl path
+#source /opt/intel/mkl/bin/mklvars.sh intel64
 
-##################################################################################
-export DYLD_LIBRARY_PATH=/usr/local/opt/llvm@5/lib:${DYLD_LIBRARY_PATH}
-export LIBRARY_PATH=/usr/local/opt/llvm@5/lib:${LIBRARY_PATH}
-##################################################################################
+export MKLROOT=/opt/intel/mkl
 
-# homebrew 
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+export PATH
 
-#PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-#Source bash_profile to set JAVA_HOME and add it to the PATH because for some reason is not being picked up
-#. ~/.bash_profile  # don't use this, because this can cause a dead loop
+## source autojump
+[[ -s /home/tgzhou/.autojump/etc/profile.d/autojump.sh ]] && source /home/tgzhou/.autojump/etc/profile.d/autojump.sh
 
 
-#  ---------------------------------------------------------------------------
+# 你值得拥有。。。
 #
+#figlet -f big HELLO
+
+
+	# set directory color
+	LS_COLORS=$LS_COLORS:'di=0;35:' ; export LS_COLORS
+
 #  Description:  This file holds all my BASH configurations and aliases
 #
 #  Sections:
@@ -98,6 +75,8 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bott
 #   ------------------------------------------------------------
     export PS1="________________________________________________________________________________\n| \w @ \h (\u) \n| => "
     export PS2="| => "
+
+
 
 #   Set Paths
 #   ------------------------------------------------------------
@@ -123,30 +102,13 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bott
 #   -----------------------------
 #   2. MAKE TERMINAL BETTER
 #   -----------------------------
-
-# setting alias
-
-alias gcc='gcc-7'
-alias g++='g++-7'
+# lammps alias
+alias lammps='/home/tgzhou/Tools/lammps-11Aug17/src/lmp_mpi'
+alias jupyter_Mac='jupyter notebook --no-browser --port=8990'
 
 alias vimconfig='vim ~/.vimrc'
 alias zshconfig='vim ~/.zshrc'
 alias bashconfig='vim ~/.bashrc'
-
-alias exfile='function func() {cd ~/Virtual\ Machine/Exchange\ Files/};func'
-alias mvexfile='function func() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};func'
-alias cpexfile='function func() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};func'
-alias myvm='function func() {ssh tgzhou@192.168.166.$1};func'
-alias maxwell='ssh -X tgzhou@162.105.151.19'
-alias maxwell_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.19'
-alias maxwell_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.19'
-alias sunju_jupyter='ssh -NL 8989:localhost:8989 tgzhou@172.31.58.38'
-alias sunju_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@172.31.58.38'
-alias sunju='ssh -X tgzhou@172.31.58.38'
-alias pkunet='~/Tools/PkuGate/connect -u 1600011394'
-alias tree='tree -Ch'
-
-#terminating alias
 
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
@@ -167,7 +129,7 @@ alias ~="cd ~"                              # ~:            Go Home
 alias c='clear'                             # c:            Clear terminal display
 #alias which='type -all'                     # which:        Find executables
 alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
-alias show_options='shopt'                  # Show_options: display bash options settings
+#alias show_options='shopt'                  # Show_options: display bash options settings
 alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
 alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
 mcd () { mkdir -p "$1" && cd "$1"; }        # mcd:          Makes new Dir and jumps inside
@@ -299,7 +261,7 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 #   6. NETWORKING
 #   ---------------------------
 
-alias mypubip='curl ip.appspot.com'                    # mypubip:         Public facing IP Address
+alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
 alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
 alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
 alias lsock='sudo /usr/sbin/lsof -i -P'             # lsock:        Display open sockets
@@ -319,7 +281,7 @@ alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rul
         echo -e "\n${RED}Current date :$NC " ; date
         echo -e "\n${RED}Machine stats :$NC " ; uptime
         echo -e "\n${RED}Current network location :$NC " ; scselect
-        echo -e "\n${RED}Public facing IP Address :$NC " ; mypubip
+        echo -e "\n${RED}Public facing IP Address :$NC " ;myip
         #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
         echo
     }
@@ -353,16 +315,16 @@ alias mountReadWrite='/sbin/mount -uw /'    # mountReadWrite:   For use when boo
 #   8. WEB DEVELOPMENT
 #   ---------------------------------------
 
-alias apacheEdit='sudo edit /etc/httpd/httpd.conf'      # apacheEdit:       Edit httpd.conf
-alias apacheRestart='sudo apachectl graceful'           # apacheRestart:    Restart Apache
-alias editHosts='sudo edit /etc/hosts'                  # editHosts:        Edit /etc/hosts file
-alias herr='tail /var/log/httpd/error_log'              # herr:             Tails HTTP error logs
-alias apacheLogs="less +F /var/log/apache2/error_log"   # Apachelogs:   Shows apache error logs
-httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grabs headers from web page
+#alias apacheEdit='sudo edit /etc/httpd/httpd.conf'      # apacheEdit:       Edit httpd.conf
+#alias apacheRestart='sudo apachectl graceful'           # apacheRestart:    Restart Apache
+#alias editHosts='sudo edit /etc/hosts'                  # editHosts:        Edit /etc/hosts file
+#alias herr='tail /var/log/httpd/error_log'              # herr:             Tails HTTP error logs
+#alias apacheLogs="less +F /var/log/apache2/error_log"   # Apachelogs:   Shows apache error logs
+#httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grabs headers from web page
 
-#   httpDebug:  Download a web page and show info on what took time
-#   -------------------------------------------------------------------
-    httpDebug () { /usr/bin/curl $@ -o /dev/null -w "dns: %{time_namelookup} connect: %{time_connect} pretransfer: %{time_pretransfer} starttransfer: %{time_starttransfer} total: %{time_total}\n" ; }
+##   httpDebug:  Download a web page and show info on what took time
+##   -------------------------------------------------------------------
+    #httpDebug () { /usr/bin/curl $@ -o /dev/null -w "dns: %{time_namelookup} connect: %{time_connect} pretransfer: %{time_pretransfer} starttransfer: %{time_starttransfer} total: %{time_total}\n" ; }
 
 
 #   ---------------------------------------
@@ -396,4 +358,5 @@ httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grab
 #   then use: ~/Dev/Perl/randBytes 1048576 > 10MB.dat
 
 
-
+# set p4vasp environment variables
+export PATH=$PATH:/home/tgzhou/p4vasp/bin

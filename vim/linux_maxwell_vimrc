@@ -52,7 +52,7 @@ Plug 'Shougo/echodoc.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-unimpaired'
 Plug 'w0rp/ale'
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'Yggdroot/LeaderF'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
@@ -205,16 +205,16 @@ hi! spellrare gui=undercurl guisp=magenta
 "------------------------------------------------------
 
 "------------------------------------------------------
-"For leaderF python version problem
-if has('python3')
-    command! -nargs=1 Py py3 <args>
-    set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
-    set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
-else
-    command! -nargs=1 Py py <args>
-    set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
-    set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
-endif
+""For leaderF python version problem
+"if has('python3')
+    "command! -nargs=1 Py py3 <args>
+    "set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
+    "set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
+"else
+    "command! -nargs=1 Py py <args>
+    "set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
+    "set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
+"endif
 
 let g:Lf_ShortcutF = '<c-p>'
 let g:Lf_ShortcutB = '<m-b>'
@@ -232,6 +232,7 @@ let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp = 1
 let g:Lf_StlColorscheme = 'powerline'
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+let g:Lf_Ctags = "/home/tgzhou/.local/bin/ctags"
 "------------------------------------------------------
 
 "------------------------------------------------------
@@ -295,6 +296,9 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
+
+let g:gutentags_ctags_executable = '/home/tgzhou/.local/bin/ctags'
+
 "------------------------------------------------------
 
 
@@ -433,10 +437,11 @@ let g:Tex_Debug=1
 "filetype plugin indent on
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 "let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
-let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
+let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python3'
 "
 " Specify virtual enviroment 
-let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
+let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python3'
+
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 		
@@ -1252,7 +1257,7 @@ set smartindent
 set ma
 "-------------------------------------------------
 "This set meta key
-set macmeta
+"set macmeta
 "-------------------------------------------------
 
 

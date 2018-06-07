@@ -1,76 +1,122 @@
-##################################################################################
-# local alias
-alias python=python.app
-##################################################################################
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+#shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+#shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+#alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+## enable programmable completion features (you don't need to enable
+## this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+## sources /etc/bash.bashrc).
+#if ! shopt -oq posix; then
+  #if [ -f /usr/share/bash-completion/bash_completion ]; then
+    #. /usr/share/bash-completion/bash_completion
+  #elif [ -f /etc/bash_completion ]; then
+    #. /etc/bash_completion
+  #fi
+#fi
 
 
-##################################################################################
-#general path set
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# delete the rvm path
-
-# The default path is in /private/etc/paths
-# /etc/profile load this
-# put the /usr/local/opt/coreutils/libexec/gnubin into the /etc/paths because 
-# /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
-# add nvidia cuda path , only work with apple-clang
-#export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS"
-export PATH="${PATH}:/Users/zhoutiangang/anaconda3/bin"
-#export PATH="${PATH}"
-
-export PATH="/usr/local/opt/llvm@5/bin:${PATH}:/opt/local/bin"
-
-# java need to specify the classpath
-export CLASSPATH="${CLASSPATH}:${HOME}/Program/java"
-
-
-##################################################################################
-
-##################################################################################
-#  Compile and link path set
-
-##################################################################################
-# Add llvm 
-# Add lapack fortran library # delete
-# Add openblas for optimization of blas and lapack # delete
-#export LDFLAGS="-L/usr/local/opt/llvm@5/lib -Wl,-rpath,/usr/local/opt/llvm@5/lib"
-# -L/usr/local/opt/lapack/lib  # is an option
-
-#export CPPFLAGS="-I/usr/local/opt/llvm@5/include"
-# -I/usr/local/opt/lapack/include # is an option
-##################################################################################
-
-## add intel compiler path
-source /opt/intel/bin/compilervars.sh intel64
-
-## add intel mkl path
-source /opt/intel/mkl/bin/mklvars.sh intel64
-
-# add root config
-# this will delete the /usr/local/bin path 
-#pushd /usr/local >/dev/null; . bin/thisroot.sh; popd >/dev/null
-
-
-
-# due to SIP(System integrity protection)
-# In the latest release off OS-X using the DYLD_LIBRARY_PATH is not possible unless System Integrity Protection (SIP) is disabled.
-# $DYLD_LIBRARY_PATH not work
-# has to set -Wl,-rpath,
-# in ~/DYLD_LIBRARY_PATH_substitude.txt
-
-
-##################################################################################
-export DYLD_LIBRARY_PATH=/usr/local/opt/llvm@5/lib:${DYLD_LIBRARY_PATH}
-export LIBRARY_PATH=/usr/local/opt/llvm@5/lib:${LIBRARY_PATH}
-##################################################################################
-
-# homebrew 
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
-
-#PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-#Source bash_profile to set JAVA_HOME and add it to the PATH because for some reason is not being picked up
-#. ~/.bash_profile  # don't use this, because this can cause a dead loop
 
 
 #  ---------------------------------------------------------------------------
@@ -94,13 +140,56 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bott
 #   1. ENVIRONMENT CONFIGURATION
 #   -------------------------------
 
-#   Change Prompt
-#   ------------------------------------------------------------
-    export PS1="________________________________________________________________________________\n| \w @ \h (\u) \n| => "
-    export PS2="| => "
+
 
 #   Set Paths
 #   ------------------------------------------------------------
+
+#	set PATH so it includes user's private bin directories
+	PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+
+	echo "Now source intel"
+#	set intel compiler
+	## add intel compiler path
+	source ${HOME}/intel/bin/compilervars.sh intel64
+	echo "Now source intel compiler"
+
+	### add intel mkl path
+	#source ${HOME}/intel/mkl/bin/mklvars.sh intel64
+	#echo "Now source intel mkl"
+
+	## add intel mpi path
+	source ${HOME}/intel/compilers_and_libraries_2017.5.239/linux/mpi/bin64/mpivars.sh
+	echo "Now source intel mpi"
+
+#	set anaconda3
+	export PATH=${HOME}/anaconda3/bin:${HOME}/Tools/VASP/vasp/vasp.5.4.4/bin:${HOME}/.local/texlive/2017/bin/x86_64-linux:${PATH}
+
+
+#	-------------------------------------------------------
+
+
+	test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$HOME/.linuxbrew/sbin:$PATH"
+	test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
+	test -r ~/.bash_profile && echo "export PATH='$(brew --prefix)/bin:$(brew --prefix)/sbin'":'"$PATH"' >>~/.bash_profile
+	#echo "export PATH='$(brew --prefix)/bin:$(brew --prefix)/sbin'":'"$PATH"' >>~/.profile
+
+
+#gcc INCLUDE path
+export CPATH=/home/tgzhou/.local/include
+
+#	set lib
+
+	#export LD_LIBRARY_PATH=/home/tgzhou/.local/lib:${HOME}/anaconda3/lib
+	#export LIBRARY_PATH=/home/tgzhou/.local/lib:${HOME}/anaconda3/lib
+	export LD_LIBRARY_PATH=/home/tgzhou/.local/lib:${LD_LIBRARY_PATH}
+	export LIBRARY_PATH=/home/tgzhou/.local/lib:${LIBRARY_PATH}
+
+#	Add autojump
+	[[ -s /home/tgzhou/.autojump/etc/profile.d/autojump.sh ]] && source /home/tgzhou/.autojump/etc/profile.d/autojump.sh
+
+
 
 
 #   Set Default Editor (change 'Nano' to the editor of your choice)
@@ -126,25 +215,15 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bott
 
 # setting alias
 
-alias gcc='gcc-7'
-alias g++='g++-7'
+#alias exfile='function f() {cd ~/Virtual\ Machine/Exchange\ Files/};f'
+#alias mvexfile='function f() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};f'
+#alias cpexfile='function f() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};f'
 
-alias vimconfig='vim ~/.vimrc'
-alias zshconfig='vim ~/.zshrc'
-alias bashconfig='vim ~/.bashrc'
+# to my mac's channel
+# default is 8989
+alias jupyter_Mac='jupyter notebook --no-browser --port=8989'
+alias wget='wget -e https_proxy="https://10.128.202.156:8787"'
 
-alias exfile='function func() {cd ~/Virtual\ Machine/Exchange\ Files/};func'
-alias mvexfile='function func() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};func'
-alias cpexfile='function func() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};func'
-alias myvm='function func() {ssh tgzhou@192.168.166.$1};func'
-alias maxwell='ssh -X tgzhou@162.105.151.19'
-alias maxwell_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.19'
-alias maxwell_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.19'
-alias sunju_jupyter='ssh -NL 8989:localhost:8989 tgzhou@172.31.58.38'
-alias sunju_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@172.31.58.38'
-alias sunju='ssh -X tgzhou@172.31.58.38'
-alias pkunet='~/Tools/PkuGate/connect -u 1600011394'
-alias tree='tree -Ch'
 
 #terminating alias
 
@@ -338,8 +417,8 @@ alias mountReadWrite='/sbin/mount -uw /'    # mountReadWrite:   For use when boo
 #   finderShowHidden:   Show hidden files in Finder
 #   finderHideHidden:   Hide hidden files in Finder
 #   -------------------------------------------------------------------
-    alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
-    alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
+    #alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
+    #alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
 
 #   cleanupLS:  Clean up LaunchServices to remove duplicates in the "Open With" menu
 #   -----------------------------------------------------------------------------------
@@ -394,6 +473,3 @@ httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grab
 #   e.g.: hdiutil create -size 10m 10MB.dmg
 #   the above create files that are almost all zeros - if random bytes are desired
 #   then use: ~/Dev/Perl/randBytes 1048576 > 10MB.dat
-
-
-
