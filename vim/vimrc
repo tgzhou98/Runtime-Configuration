@@ -46,6 +46,8 @@ endif
 call plug#begin('~/.vim/plugged')
 
 "Plug 'VundleVim/Vundle.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'amix/vim-zenroom2'
 Plug 'mhinz/vim-signify'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'Shougo/echodoc.vim'
@@ -70,10 +72,11 @@ Plug 'xuhdev/SingleCompile' " compile Plug
 "Plug 'jiangmiao/auto-pairs'
 Plug 'rizzatti/dash.vim'
 Plug 'kshenoy/vim-signature'
-Plug 'scrooloose/nerdcommenter'
+"Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'shime/vim-livedown'
+" Plug 'plasticboy/vim-markdown'
+" Plug 'shime/vim-livedown'
 "Plug 'JamshedVesuna/vim-markdown-preview'
 "Plug 'lazywei/vim-matlab'
 "Plug 'vim-scripts/Conque-GDB'
@@ -246,6 +249,12 @@ autocmd VimEnter * EchoDocEnable
 "------------------------------------------------------
 
 
+"------------------------------------------------------
+" Goyo distracted mood
+" vim-zenroom2 for markdown
+nnoremap <silent> <leader>z :Goyo<cr>
+"------------------------------------------------------
+
 
 "------------------------------------------------------
 "asyncrun 
@@ -263,8 +272,8 @@ nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] 
 
 nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
-nnoremap <silent> <F7> :AsyncRun -cwd=<root> make <cr>
-nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make <cr>
+nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
 
 "disable python stdout buffering
 let $PYTHONUNBUFFERED=1
