@@ -46,6 +46,9 @@ endif
 call plug#begin('~/.vim/plugged')
 
 "Plug 'VundleVim/Vundle.vim'
+
+Plug 'skywind3000/asyncrun.vim'
+
 Plug 'Shougo/echodoc.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-unimpaired'
@@ -130,7 +133,7 @@ Plug 'Shougo/unite.vim'
 call plug#end()
 
 "
-let g:ctrlsf_debug_mode = 1
+
 "***********************************************************************
 "Sometimes it is helpful if your working directory is always the same as the file you are editing. To achieve this, put the following in your vimrc:
 set mouse=n
@@ -237,6 +240,35 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 set noshowmode
 autocmd VimEnter * EchoDocEnable
 "------------------------------------------------------
+
+
+
+"------------------------------------------------------
+"asyncrun 
+" 自动打开 quickfix window ，高度为 6
+let g:asyncrun_open = 6
+
+" 任务结束时候响铃提醒
+let g:asyncrun_bell = 1
+
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+nnoremap <silent> <F9> :AsyncRun g++ -Wall -std=c++14 -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] 
+
+nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
+nnoremap <silent> <F7> :AsyncRun -cwd=<root> make <cr>
+nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+
+"disable python stdout buffering
+let $PYTHONUNBUFFERED=1
+
+
+"------------------------------------------------------
+
+
 
 "------------------------------------------------------
 " gutentags
@@ -404,8 +436,7 @@ let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 		
-let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
-"let g:ctrlsf_default_root = 'cwd'
+
 let gLeaderlFold_docstring_preview = 1
 " 引入，可以补全系统，以及python的第三方包
 let g:ycm_global_ycm_extra_conf = "~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
@@ -429,6 +460,15 @@ let g:ycm_semantic_triggers =  {
 
 nnoremap <buffer> ,st :call SetTitle()<cr>
 nnoremap <buffer> ,td :call TitleDet()<cr>
+
+
+"-----------------------------------------------------V
+"CtrlSF 
+let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+"Don't open debug mode
+"let g:ctrlsf_debug_mode = 1 :don't open this
+"let g:ctrlsf_default_root = 'cwd'
+"-----------------------------------------------------V
 
 ""Syntastic is outdate 
 " Thank you so much
@@ -747,12 +787,12 @@ map <M-F2> :tabnew<CR>
 map <C-F3> \be  
 "map <F8> :tabnew .<CR>  
 map <C-h> gg=G
-map <F9> :Tagbar<CR>
+"map <F9> :Tagbar<CR>
 map ff <Plug>CtrlSFPrompt
 map F <Plug>CtrlSFQuickfixPrompt
 "map <silent> <F2> :call AddFirstSingleComments()<CR>  
 nnore map <C-2> :vert diffsplit 
-nnoremap <F3> :g/^\s*$/d<CR> 
+nnoremap <F2> :g/^\s*$/d<CR> 
 function! AddFirstSingleComments()  
     if &filetype == 'sh'  
         :.,+0 s/^/#/  
@@ -794,7 +834,7 @@ function! RemoveFirstSingleComments()
 endfunction  
 colorscheme solarized  
 "按<F4>键依次修改颜色主题  
-map <F4> :call ChangeColorScheme()<CR>
+map <F3> :call ChangeColorScheme()<CR>
 let g:csnum = 0
 function! ChangeColorScheme()  
 	if g:csnum == 0  
@@ -827,14 +867,17 @@ function! ChangeColorScheme()
 	endif  
 endfunction
 
+"----------------------------------------------------
+" not need single compile again, thank you
 " only for C++, but this configure is global
 "nmap <F6> :SCCompileAF -std=c++14 -g3<cr>
-nmap <F5> :SCCompileRunAF -std=c++14 -O3<cr>
+"nmap <F5> :SCCompileRunAF -std=c++14 -O3<cr>
 
-"nmap <F6> :SCCompile <cr>
-nmap <F6> :SCCompileRun<cr>
-nmap <F7> :SCViewResult<cr>
-nmap <F10>:SCChooseCompiler<cr>
+""nmap <F6> :SCCompile <cr>
+"nmap <F6> :SCCompileRun<cr>
+"nmap <F7> :SCViewResult<cr>
+"nmap <F10>:SCChooseCompiler<cr>
+"----------------------------------------------------
 
 "map <F5> :call CompileRunGcc()<CR>
 "func! CompileRunGcc()
