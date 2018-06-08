@@ -46,13 +46,18 @@ endif
 call plug#begin('~/.vim/plugged')
 
 "Plug 'VundleVim/Vundle.vim'
+Plug 'skywind3000/vim-preview'
+Plug 'haya14busa/incsearch.vim'
+Plug 'Yggdroot/indentLine'
+Plug 'junegunn/goyo.vim'
+Plug 'amix/vim-zenroom2'
 Plug 'mhinz/vim-signify'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-unimpaired'
 Plug 'w0rp/ale'
-Plug 'Yggdroot/LeaderF'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
@@ -70,10 +75,11 @@ Plug 'xuhdev/SingleCompile' " compile Plug
 "Plug 'jiangmiao/auto-pairs'
 Plug 'rizzatti/dash.vim'
 Plug 'kshenoy/vim-signature'
-Plug 'scrooloose/nerdcommenter'
+"Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'shime/vim-livedown'
+" Plug 'plasticboy/vim-markdown'
+" Plug 'shime/vim-livedown'
 "Plug 'JamshedVesuna/vim-markdown-preview'
 "Plug 'lazywei/vim-matlab'
 "Plug 'vim-scripts/Conque-GDB'
@@ -96,12 +102,12 @@ Plug 'hdima/python-syntax'
 Plug 'dyng/ctrlsf.vim'
 "Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
-"Plug 'Lokaltog/vim-powerline'
+Plug 'Lokaltog/vim-powerline'
 Plug 'tmhedberg/SimpylFold'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kien/rainbow_parentheses.vim'
 "Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-fugitive'  
 Plug 'Lokaltog/vim-easymotion'  
 "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  "Html writting
@@ -185,8 +191,8 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:airline#extensions#ale#enabled = 1
 
-let b:ale_fixers = { 
-			\ 'python': ['autopep8'],
+let g:ale_fixers = { 
+			\ 'python': ['yapf'],
 			\ 'cpp': ['clang-format'],
 			\}
 let g:ale_c_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
@@ -205,16 +211,16 @@ hi! spellrare gui=undercurl guisp=magenta
 "------------------------------------------------------
 
 "------------------------------------------------------
-""For leaderF python version problem
-"if has('python3')
-    "command! -nargs=1 Py py3 <args>
-    "set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
-    "set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
-"else
-    "command! -nargs=1 Py py <args>
-    "set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
-    "set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
-"endif
+"For leaderF python version problem
+" if has('python3')
+"     command! -nargs=1 Py py3 <args>
+"     set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
+"     set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
+" else
+"     command! -nargs=1 Py py <args>
+"     set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
+"     set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
+" endif
 
 let g:Lf_ShortcutF = '<c-p>'
 let g:Lf_ShortcutB = '<m-b>'
@@ -232,12 +238,11 @@ let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp = 1
 let g:Lf_StlColorscheme = 'powerline'
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
-let g:Lf_Ctags = "/home/tgzhou/.local/bin/ctags"
 "------------------------------------------------------
 
 "------------------------------------------------------
 "Signify Diff
-noremap <m-d> :SignifyDiff<cr>
+noremap <m-f> :SignifyDiff<cr>
 "------------------------------------------------------
 
 "------------------------------------------------------
@@ -246,6 +251,37 @@ set noshowmode
 autocmd VimEnter * EchoDocEnable
 "------------------------------------------------------
 
+
+"------------------------------------------------------
+"incsearch.vim
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+"------------------------------------------------------
+
+
+"------------------------------------------------------
+" Goyo distracted mood
+" vim-zenroom2 for markdown
+nnoremap <silent> <leader>z :Goyo<cr>
+"------------------------------------------------------
+
+
+"------------------------------------------------------
+"vim tag preview
+"
+noremap <m-;> :PreviewTag <cr>
+noremap <c-m-;> :PreviewClose <cr>
+noremap <m-u> :PreviewScroll -1<cr>
+noremap <m-d> :PreviewScroll +1<cr>
+inoremap <m-u> <c-\><c-o>:PreviewScroll -1<cr>
+inoremap <m-d> <c-\><c-o>:PreviewScroll +1<cr>
+noremap <m-q> :PreviewSignature!<cr>
+inoremap <m-q> <c-\><c-o>:PreviewSignature!<cr>
+"
+"PreviewClose
+"<c-w> z
+"------------------------------------------------------
 
 
 "------------------------------------------------------
@@ -264,8 +300,8 @@ nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] 
 
 nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
-nnoremap <silent> <F7> :AsyncRun -cwd=<root> make <cr>
-nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make <cr>
+nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
 
 "disable python stdout buffering
 let $PYTHONUNBUFFERED=1
@@ -296,9 +332,6 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
-
-let g:gutentags_ctags_executable = '/home/tgzhou/.local/bin/ctags'
-
 "------------------------------------------------------
 
 
@@ -343,7 +376,7 @@ let g:vimtex_latexmk_options = '-pdf -pdflatex="xelatex --shell-escape %O %S " -
 "nmap <leader><C-t> :CtrlPBufTag<CR> 
 
 "commadtmax file
-let g:CommandTMaxHeight=20
+" let g:CommandTMaxHeight = 20
 
 "tabular
 if exists(":Tabularize")
@@ -369,14 +402,33 @@ map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
 
 
+"********************
 
+"-----------------------------------------------------V
+"CtrlSF 
+"Be careful!!!!!!!!!
+"<leader>f give to easymotion, don't need f{char} t{char} any more
+let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+map ff <Plug>CtrlSFPrompt
+map F <Plug>CtrlSFQuickfixPrompt
+"Don't open debug mode
+"let g:ctrlsf_debug_mode = 1 :don't open this
+"let g:ctrlsf_default_root = 'cwd'
+"-----------------------------------------------------V
+
+
+
+"-----------------------------------------------------V
 "markdown
-let vim_markdown_preview_hotkey='<C-M>'
-let vim_markdown_preview_browser='Google Chrome'
-let vim_markdown_preview_toggle=1
+" let vim_markdown_preview_hotkey='<C-M>'
+" let vim_markdown_preview_browser='Google Chrome'
+" let vim_markdown_preview_toggle=1
+"-----------------------------------------------------V
 
+"-----------------------------------------------------V
 "IndentLine
 let g:indentLine_enabled = 1
+"-----------------------------------------------------V
 
 "matlab
 
@@ -384,7 +436,7 @@ let g:indentLine_enabled = 1
 "****************************
 inoremap jk <ESC>
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
-autocmd! FileType python,c,cpp,tex,fortran,ncl noremap <buffer> <F3> :call Autopep8()<CR>
+autocmd! FileType python noremap <buffer> <F3> :call Autopep8()<CR>
 
 "nmap <leader><F6> :SyntasticCheck<CR>
 "****Leader************************************************
@@ -436,12 +488,10 @@ let g:Tex_Debug=1
 "set runtimepath+=~/.vim/bundle/YouCompleteMe
 "filetype plugin indent on
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
-"let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
 let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python3'
 "
 " Specify virtual enviroment 
 let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python3'
-
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 		
@@ -471,13 +521,7 @@ nnoremap <buffer> ,st :call SetTitle()<cr>
 nnoremap <buffer> ,td :call TitleDet()<cr>
 
 
-"-----------------------------------------------------V
-"CtrlSF 
-let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
-"Don't open debug mode
-"let g:ctrlsf_debug_mode = 1 :don't open this
-"let g:ctrlsf_default_root = 'cwd'
-"-----------------------------------------------------V
+
 
 ""Syntastic is outdate 
 " Thank you so much
@@ -542,7 +586,7 @@ set nu
 "it would be nice to set tag files by the active virtualenv here
 "set tags=~/mytags "tags for ctags and taglist
 "omnicomplete
-autocmd FileType python set =python3complete#Complete
+
 "" I have poly 
 "------------Start Python PEP 8 stuff----------------
 " Number of spaces that a pre-existing tab is equal to.
@@ -650,7 +694,7 @@ function!  SetTitle()
 		if &filetype == 'sh' 
 		call setline(1,"\#!/bin/bash") 
 		call append(line("."), "\#########################################################################") 
-		call append(line(".")+1, "\#File Name: ".expand("%"))
+		call append(line(".")+1, "\# File Name: ".expand("%"))
 		call append(line(".")+2, "\# Author:  Tiangang Zhou") 
 		call append(line(".")+3, "\# mail: tg_zhou@pku.edu.cn") 
 		call append(line(".")+4, "\#########################################################################") 
@@ -659,7 +703,7 @@ function!  SetTitle()
 	elseif &filetype == 'cpp'
 		call setline(1,"\//###########################################################")
 		call append(line("."), "\//#########################################################################") 
-		call append(line(".")+1, "\//#File Name: ".expand("%"))
+		call append(line(".")+1, "\//# File Name: ".expand("%"))
 		call append(line(".")+2, "\//# Author:  Tiangang Zhou") 
 		call append(line(".")+3, "\//# mail: tg_zhou@pku.edu.cn") 
 		call append(line(".")+4, "\//#########################################################################") 
@@ -668,7 +712,7 @@ function!  SetTitle()
 
 		call setline(1,"\//###########################################################")
 		call append(line("."), "\//#########################################################################") 
-		call append(line(".")+1, "\//#File Name: ".expand("%"))
+		call append(line(".")+1, "\//# File Name: ".expand("%"))
 		call append(line(".")+2, "\//# Author:  Tiangang Zhou") 
 		call append(line(".")+3, "\//# mail: tg_zhou@pku.edu.cn") 
 		call append(line(".")+4, "\//#########################################################################") 
@@ -677,11 +721,11 @@ function!  SetTitle()
 		call setline(1, "\#!\/usr\/bin\/env python")
 		call append(line("."), "##-*-coding:utf-8 -*-")
 		call append(line(".")+1, "\#########################################################################") 
-		call append(line(".")+2, "\#	 File Name   :  ".expand("%")) 
-		call append(line(".")+3, "\#	 author      :   Tiangang Zhou") 
-		call append(line(".")+4, "\#	 e-Mail      :  tg_zhou@pku.edu.cn ") 
-		call append(line(".")+5, "\#     created at  :  ".strftime("%Y-%m-%d %H:%M"))
-		call append(line(".")+6, "\#     purpose     :  ")
+		call append(line(".")+2, "\# File Name   :  ".expand("%")) 
+		call append(line(".")+3, "\# author      :   Tiangang Zhou") 
+		call append(line(".")+4, "\# e-Mail      :  tg_zhou@pku.edu.cn ") 
+		call append(line(".")+5, "\# created at  :  ".strftime("%Y-%m-%d %H:%M"))
+		call append(line(".")+6, "\# purpose     :  ")
 		call append(line(".")+7, "\#########################################################################") 
 		call append(line(".")+8, "")
 		call append(line(".")+9, "")
@@ -691,17 +735,17 @@ function!  SetTitle()
 		call append(line(".")+13, "")
 		call append(line(".")+14, "")
 		call append(line(".")+15, "if __name__==\"__main__\":")
-		call append(line(".")+16, "    filename=\"\.\/data\"")
-		call append(line(".")+17, "    data=np.load(filename)[()]")
-		call append(line(".")+18, "    detail(data)")
+		call append(line(".")+16, "")
+		call append(line(".")+17, "")
+		call append(line(".")+18, "")
 		call append(line(".")+19, "")
 	elseif &filetype=='tex'
 		call setline(1, "\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%") 
 		call append(line("."),"\%	 all right is reserved for Tiangang Zhou")
-		call append(line(".")+1, "\%	 File Name   :  ".expand("%")) 
-		call append(line(".")+2, "\%	 author      :  Tiangang Zhou") 
-		call append(line(".")+3, "\%	 e-Mail      :  tg_zhou@pku.edu.cn ") 
-		call append(line(".")+4, "\%    created at  :  ".strftime("%Y-%m-%d %H:%M"))
+		call append(line(".")+1, "\% File Name   :  ".expand("%")) 
+		call append(line(".")+2, "\% author      :  Tiangang Zhou") 
+		call append(line(".")+3, "\% e-Mail      :  tg_zhou@pku.edu.cn ") 
+		call append(line(".")+4, "\% created at  :  ".strftime("%Y-%m-%d %H:%M"))
 		call append(line(".")+5, "\%    purpose     :  ")
 		call append(line(".")+6, "\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%") 
 		call append(line(".")+7, "")
@@ -797,8 +841,9 @@ map <C-F3> \be
 "map <F8> :tabnew .<CR>  
 map <C-h> gg=G
 "map <F9> :Tagbar<CR>
-map ff <Plug>CtrlSFPrompt
-map F <Plug>CtrlSFQuickfixPrompt
+"
+
+
 "map <silent> <F2> :call AddFirstSingleComments()<CR>  
 nnore map <C-2> :vert diffsplit 
 nnoremap <F2> :g/^\s*$/d<CR> 
@@ -957,8 +1002,7 @@ let NERDTreeIgnore=['\.pyc$']
 "nnoremap f :NERDTreeToggle
 map <F8> :NERDTreeToggle<CR> 
 "map <> :call SaveInputData()<CR>                                                                          
-set splitbelow
-set splitright
+
 nnoremap <C-J> <C-W> <C-J>
 nnoremap <C-K> <C-W> <C-K>
 nnoremap <C-L> <C-W> <C-L>
@@ -1255,11 +1299,16 @@ set showmatch
 set matchtime=3
 set smartindent
 set ma
+"Preview window
+set splitbelow
+set splitright
+
 "-------------------------------------------------
 "This set meta key
-"set macmeta
+" set macmeta
 "-------------------------------------------------
 
+" autocmd FileType python set =python3complete#Complete
 
 
 nnoremap <leader>m : set makeprg=make <CR>
