@@ -46,6 +46,9 @@ endif
 call plug#begin('~/.vim/plugged')
 
 "Plug 'VundleVim/Vundle.vim'
+Plug 'luochen1990/rainbow'
+Plug 'Konfekt/FastFold'
+Plug 'takac/vim-hardtime'
 Plug 'skywind3000/vim-preview'
 Plug 'haya14busa/incsearch.vim'
 Plug 'Yggdroot/indentLine'
@@ -71,8 +74,8 @@ Plug 'wookayin/vim-typora'
 "Plug 'xolox/vim-misc'
 Plug 'yssl/QFEnter'
 Plug 'valloric/YouCompleteMe'
-Plug 'xuhdev/SingleCompile' " compile Plug
-"Plug 'jiangmiao/auto-pairs'
+"Plug 'xuhdev/SingleCompile' " compile Plug
+Plug 'jiangmiao/auto-pairs'
 Plug 'rizzatti/dash.vim'
 Plug 'kshenoy/vim-signature'
 "Plug 'scrooloose/nerdcommenter'
@@ -85,7 +88,7 @@ Plug 'godlygeek/tabular'
 "Plug 'vim-scripts/Conque-GDB'
 Plug 'tpope/vim-surround'
 Plug 'lervag/vimtex'
-Plug 'vim-latex/vim-latex'
+"Plug 'vim-latex/vim-latex'
 Plug 'flazz/vim-colorschemes'
 Plug 'terryma/vim-multiple-cursors'
 "Plug 'vim-scripts/matchit.zip'
@@ -105,7 +108,7 @@ Plug 'vim-airline/vim-airline'
 "Plug 'Lokaltog/vim-powerline'
 Plug 'tmhedberg/SimpylFold'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'kien/rainbow_parentheses.vim'
+"Plug 'kien/rainbow_parentheses.vim'
 "Plug 'ctrlpvim/ctrlp.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-fugitive'  
@@ -167,7 +170,7 @@ autocmd QuickFixCmdPost    l* nested lwindow
 
 
 "PATH
-let $PATH ='/usr/local/opt/llvm/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Applications/MATLAB_R2016b.app/bin:/Applications/MATLAB_R2016b.app/bin/maci64:$PATH:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/zhoutiangang/.rvm/bin'
+" let $PATH ='/usr/local/opt/llvm@5/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Applications/MATLAB_R2016b.app/bin:/Applications/MATLAB_R2016b.app/bin/maci64:$PATH:/Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku:/Users/zhoutiangang/.rvm/bin'
 
 set omnifunc=syntaxcomplete#Complete
 "set tags=/Users/zhoutiangang/Documents/Tools/tags
@@ -242,7 +245,7 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
 "------------------------------------------------------
 "Signify Diff
-noremap <m-d> :SignifyDiff<cr>
+noremap <m-f> :SignifyDiff<cr>
 "------------------------------------------------------
 
 "------------------------------------------------------
@@ -328,30 +331,53 @@ let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
+" excutable
+let g:gutentags_ctags_executable = '/home/tgzhou/.local/bin'
+
 " 检测 ~/.cache/tags 不存在就新建
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
 "------------------------------------------------------
 
+"------------------------------------------------------
+"FastFold
+"
+nmap zuz <Plug>(FastFoldUpdate)
+let g:fastfold_savehook = 1
+let g:fastfold_fold_command_suffixes =  ['x','X','a','A','o','O','c','C']
+let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
+let g:markdown_folding = 1
+let g:tex_fold_enabled = 1
+let g:vimsyn_folding = 'af'
+let g:xml_syntax_folding = 1
+let g:javaScript_fold = 1
+let g:sh_fold_enabled= 7
+let g:ruby_fold = 1
+let g:perl_fold = 1
+let g:perl_fold_blocks = 1
+let g:r_syntax_folding = 1
+let g:rust_fold = 1
+let g:php_folding = 1
+"------------------------------------------------------
+
 
 "------------------------------------------------------
 "vimtex
+"
+"Fold, integrate with fastfold plugin
+let g:vimtex_fold_enabled = 1
 
 let g:vimtex_quickfix_enabled = 0
 
 let g:vimtex_view_method = 'skim'
-nmap <leader>lt  :VimtexTocToggle<CR>
-nmap <leader>lf  :VimtexRefreshFolds<CR>
-nmap <leader>ld  :VimtexDocPackage<CR>
-nmap <leader>ld  :VimtexLabelsToggle<CR>
-nmap <leader>le  :VimtexErrors<CR>
-nmap <leader>ll  :VimtexCompile<CR>
-nmap <leader>lv  :VimtexView<CR>
-
-
-
-
+" nmap <leader>lt  :VimtexTocToggle<CR>
+" nmap <leader>lf  :VimtexRefreshFolds<CR>
+" nmap <leader>ld  :VimtexDocPackage<CR>
+" nmap <leader>ld  :VimtexLabelsToggle<CR>
+" nmap <leader>le  :VimtexErrors<CR>
+" nmap <leader>ll  :VimtexCompile<CR>
+" nmap <leader>lv  :VimtexView<CR>
 
 "********************************************************
 "注意！！！！！！！！！！！
@@ -376,7 +402,7 @@ let g:vimtex_latexmk_options = '-pdf -pdflatex="xelatex --shell-escape %O %S " -
 "nmap <leader><C-t> :CtrlPBufTag<CR> 
 
 "commadtmax file
-" let g:CommandTMaxHeight = 20
+let g:CommandTMaxHeight = 20
 
 "tabular
 if exists(":Tabularize")
@@ -394,8 +420,8 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 
 
 " Move to line
-map <Leader>l <Plug>(easymotion-bd-jk)
-nmap <Leader>l <Plug>(easymotion-overwin-line)
+map <Leader>; <Plug>(easymotion-bd-jk)
+nmap <Leader>; <Plug>(easymotion-overwin-line)
 
 " Move to word
 map  <Leader>w <Plug>(easymotion-bd-w)
@@ -441,12 +467,7 @@ autocmd! FileType python noremap <buffer> <F3> :call Autopep8()<CR>
 "nmap <leader><F6> :SyntasticCheck<CR>
 "****Leader************************************************
 
-"Latex 补全
-"非常重要
-if !exists('g:ycm_semantic_triggers')
-    let g:ycm_semantic_triggers = {}
-endif
-let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+
 
 
 
@@ -456,17 +477,6 @@ let g:multi_cursor_normal_maps ={'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1
 
 "Latex syntax conceal
 
-
-"Latex-suite 
-"(don't need anymore, use latexmk)
-"let g:Tex_CompileRule_pdf = 'xelatex --interaction=nonstopmode -synctex=1 -src-specials $*'
-"let g:Tex_MultipleCompileFormats = 'pdf'
-"let g:Tex_ViewRuleComplete_pdf = 'open -a Skim $*.pdf &'
-
-	
-map ,r :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline <C-r>=line('.')<CR> %<.pdf<CR>
-
-let g:Tex_Debug=1
 
 
 
@@ -485,6 +495,7 @@ let g:Tex_Debug=1
 
 "------------------------------------------------------------
 "Powerful ycm !!!
+"
 "set runtimepath+=~/.vim/bundle/YouCompleteMe
 "filetype plugin indent on
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
@@ -494,7 +505,6 @@ let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python3'
 let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python3'
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
-		
 
 let gLeaderlFold_docstring_preview = 1
 " 引入，可以补全系统，以及python的第三方包
@@ -515,6 +525,113 @@ let g:ycm_semantic_triggers =  {
            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
            \ 'cs,lua,javascript': ['re!\w{2}'],
            \ }
+
+"autocomplet:
+let g:ycm_autoclose_preview_window_after_completion=1
+
+"----------------------------------------------------------------
+"Latex 补全
+"非常重要
+"注意这个必须放在YCM配置底下底下
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+
+
+"*************************************************************************************
+"The following is deprecated
+"*************************************************************************************
+"
+"let g:ycm_global_ycm_extra_conf = '~/.vim/data/ycm/.ycm_extra_conf.py'
+" 不显示开启vim时检查ycm_extra_conf文件的信息  
+"let g:ycm_confirm_extra_conf=0
+"" 开启基于tag的补全，可以在这之后添加需要的标签路径  
+"let g:ycm_collect_simulatedidentifiers_from_tags_files=1
+""注释和字符串中的文字也会被收入补全
+"let g:ycm_collect_identifiers_from_comments_and_strings = 0
+"" 输入第2个字符开始补全
+"let g:ycm_min_num_of_chars_for_completion=2
+"" 禁止缓存匹配项,每次都重新生成匹配项
+"let g:ycm_cache_=0
+"" 开启语义补全
+"let g:ycm_seed_identifiers_with_syntax=1	
+""在注释输入中也能补全
+"let g:ycm_complete_in_comments = 1
+""在字符串输入中也能补全
+"let g:ycm_complete_in_strings = 1
+"" 设置在下面几种格式的文件上屏蔽ycm
+"let g:ycm_filetype_blacklist = {
+      "\ 'tagbar' : 1,
+      "\ 'nerdtree' : 1,
+      "\}
+""autocomplete
+"let g:ycm_autoclose_preview_window_after_completion=1
+"let g:ycm_key_invoke_completion = ''
+
+"Ycm autocompletion trigger
+"let g:ycm_key_invoke_completion = '<C-Space>'
+
+"YcmCompleter operation
+" 跳转到定义处
+nnoremap <leader>gg :YcmCompleter GoTo<CR>
+"nnoremap <leader>gf :YcmCompleter FixIt<CR>
+"nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
+nnoremap <leader>gt :YcmCompleter GetType<CR>
+nnoremap <leader>gdc :YcmCompleter GetDoc<CR>
+"nnoremap <leader>gp :YcmCompleter GetParent<CR>
+"nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+"nnoremap <leader>gdf :YcmCompleter GoToDefinition<CR>
+"nnoremap <leader>gdl :YcmCompleter GoToDeclaration<CR>
+"nnoremap <leader>rr :YcmCompleter RefactorRename<CR>
+"nnoremap <leader>sd :YcmShowDetailedDiagnostic<CR>
+
+
+"nnoremap <leader><F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
+"----------------------------------------------------------------
+
+
+"--------------------------------------------------------------------------
+"Ultisnips YCM
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger      = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+"--------------------------------------------------------------------------
+
+
+"------------------------------------------------------------------
+"Dash search
+nmap <silent> <leader>d <Plug>DashSearch
+"------------------------------------------------------------------
+
+
+
+"------------------------------------------------------------------
+"QFENTER
+let g:qfenter_keymap = {}
+let g:qfenter_keymap.vopen = ['<C-v>']
+let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
+let g:qfenter_keymap.topen = ['<C-t>']
+"------------------------------------------------------------------
+
+
+"--------------------------------------------------------------------------------------------------------
+"Latex-suite 
+"(don't need anymore, use latexmk)
+"let g:Tex_CompileRule_pdf = 'xelatex --interaction=nonstopmode -synctex=1 -src-specials $*'
+"let g:Tex_MultipleCompileFormats = 'pdf'
+"let g:Tex_ViewRuleComplete_pdf = 'open -a Skim $*.pdf &'
+"
+"
+"*********************************					Use \lv instead
+map ,r :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline <C-r>=line('.')<CR> %<.pdf<CR>
+
+" let g:Tex_Debug=1
+"--------------------------------------------------------------------------------------------------------
 
 
 nnoremap <buffer> ,st :call SetTitle()<cr>
@@ -560,18 +677,38 @@ inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 
 
 "inoremap <leader><leader> <C-x><C-o>
+"--------------------------------------------------------------------------------
+"Rainbow ()
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+"--------------------------------------------------------------------------------
 
-"custom keys
-let mapleader=" "
-"
+
+
+
+"--------------------------------------------------------------------------------
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 let NERDTreeShowBookmarks=1
 
-"I don't like swap files
-set noswapfile
-"turn on numbering
-set nu
+"NERDtee设定
+let NERDChristmasTree=1
+let NERDTreeAutoCenter=1
+let NERDTreeBookmarksFile=$VIM.'\Data\NerdBookmarks.txt'
+let NERDTreeMouseMode=2
+let NERDTreeShowBookmarks=1
+let NERDTreeShowFiles=1
+let NERDTreeShowHidden=1
+let NERDTreeShowLineNumbers=1
+let NERDTreeWinPos='left'
+let NERDTreeWinSize=25
+let g:tagbar_width=20
+let NERDTreeIgnore=['\.pyc$']
+"nnoremap f :NERDTreeToggle
+map <F8> :NERDTreeToggle<CR> 
+"map <> :call SaveInputData()<CR>                                                                          
+"--------------------------------------------------------------------------------
+
+
 "python with virtualenv support
 "py << EOF
 "import os.path
@@ -669,6 +806,7 @@ autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitl
   "let g:AutoPairsShortcutJump       = '˜' " <m-n>
   "let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
 "endif
+let g:AutoPairsShortcutToggle = ''
 "------------------------------------------------------------------------
 
 "------------------------------------------------------------------------
@@ -831,17 +969,7 @@ function!  SetTitle()
 	endif
 	autocmd BufNewFile * normal G
 endfunc 
-"nmap <leader>w :w!<cr>
-"nmap <leader>f  :find<cr>
-vmap <C-c> "+y
-map! <C-A> <Esc>ggVGY
-map <C-A> ggVGY
-map <M-F2> :tabnew<CR>  
-map <C-F3> \be  
-"map <F8> :tabnew .<CR>  
-map <C-h> gg=G
-"map <F9> :Tagbar<CR>
-"
+
 
 
 "map <silent> <F2> :call AddFirstSingleComments()<CR>  
@@ -986,22 +1114,9 @@ endfunction
 
 
 
-"NERDtee设定
-let NERDChristmasTree=1
-let NERDTreeAutoCenter=1
-let NERDTreeBookmarksFile=$VIM.'\Data\NerdBookmarks.txt'
-let NERDTreeMouseMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeShowFiles=1
-let NERDTreeShowHidden=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeWinPos='left'
-let NERDTreeWinSize=25
-let g:tagbar_width=20
-let NERDTreeIgnore=['\.pyc$']
-"nnoremap f :NERDTreeToggle
-map <F8> :NERDTreeToggle<CR> 
-"map <> :call SaveInputData()<CR>                                                                          
+
+
+
 
 nnoremap <C-J> <C-W> <C-J>
 nnoremap <C-K> <C-W> <C-K>
@@ -1012,16 +1127,16 @@ func! SaveInputData()
 	exec 'normal "+gP'
 	exec "w! /tmp/input_data"
 	endfunc
-let g:rbpt_colorpairs = [ ['brown', 'RoyalBlue3'], ['Darkblue', 'SeaGreen3'], ['darkgray', 'DarkOrchid3'], ['darkgreen', 'firebrick3'],['darkcyan', 'RoyalBlue3'],['darkred', 'SeaGreen3'],['darkmagenta', 'DarkOrchid3'],['brown', 'firebrick3'],['gray', 'RoyalBlue3'],['black',       'SeaGreen3'],['darkmagenta', 'DarkOrchid3'],['Darkblue',  'firebrick3'],['darkgreen', 'RoyalBlue3'],['darkcyan', 'SeaGreen3'],['darkred', 'DarkOrchid3'],['red', 'firebrick3']]
-let g:rbpt_max = 16
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-" winmanager"
-let g:winManagerWindowLayout='NERDTree|Tagbar'
-let g:winManagerWidth=30
-let g:AutoOpenWinManager = 1 "这里要配合修改winmanager.vim文件，见下方说明"
+" let g:rbpt_colorpairs = [ ['brown', 'RoyalBlue3'], ['Darkblue', 'SeaGreen3'], ['darkgray', 'DarkOrchid3'], ['darkgreen', 'firebrick3'],['darkcyan', 'RoyalBlue3'],['darkred', 'SeaGreen3'],['darkmagenta', 'DarkOrchid3'],['brown', 'firebrick3'],['gray', 'RoyalBlue3'],['black',       'SeaGreen3'],['darkmagenta', 'DarkOrchid3'],['Darkblue',  'firebrick3'],['darkgreen', 'RoyalBlue3'],['darkcyan', 'SeaGreen3'],['darkred', 'DarkOrchid3'],['red', 'firebrick3']]
+" let g:rbpt_max = 16
+" au VimEnter * RainbowParenthesesToggle
+" au Syntax * RainbowParenthesesLoadRound
+" au Syntax * RainbowParenthesesLoadSquare
+" au Syntax * RainbowParenthesesLoadBraces
+" " winmanager"
+" let g:winManagerWindowLayout='NERDTree|Tagbar'
+" let g:winManagerWidth=30
+" let g:AutoOpenWinManager = 1 "这里要配合修改winmanager.vim文件，见下方说明"
 function! UpdateTitle()
     normal m'
     execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
@@ -1054,69 +1169,55 @@ vmap <C-v> <Plug>(expand_region_shrink)
 "noremap <BS> g
 let g:winManagerWindowLayout='FileExplorer|TagList'
 "noremap wm :WMToggle
-"set tags=/home/gangz/pylib/tags,/home/gangz/local/Enthought/User/lib/python2.7/site-packages/tags,/home/gangz/work/tags
-set cursorline
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <Alt-k> <C-X><C-K>
-let g:SimpylFold_docstring_preview=1
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
+" nnoremap <Alt-k> <C-X><C-K> 
+" let g:SimpylFold_docstring_preview=1
 let python_highlight_all=1
-syntax on
 let g:autopep8_disable_show_diff=1
 "
 "
-"非常好的行号设置
-"*********************************************
-set number
-set relativenumber
-"inoremap jj <ESC> 
-"nmap <leader>w :w<CR>
-nmap <leader>q :q<CR>
-"nmap <leader>wq :wq<CR>
-nmap gh ^
-nmap gl $
-vmap gh ^
-vmap gl $
+
+
+
+
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
-ab iopt from cpac.optics import 
-ab ipnsd from cpac.PNSD import
-ab imath from cpac.math import
-ab itool from cpac.tools import 
-ab icoreshell from coacp.optices import coreshell,internal,exteranl
-ab iexternal from coacp.optices import coreshell,internal,exteranl
-ab iinternal from coacp.optices import coreshell,internal,exteranl
-ab ipf from cpac.optics import PFs_PNSD
-ab ibcpmsd from cpac.optics import Get_BCpvsd_YF
-ab ibounds from cpac.PNSD import Get_Dps_bounds
-ab iangstrom from cpac.BC import angstrom
-ab ismooth from cpac.math import smooth
-ab ilineregress from cpac.math import lineregress
-ab igetdatafromjul from uselib.math import getDataFromJul
-ab ijul2date from uselib.time import jul2date
-ab idate2jul from uselib.time import date2ju:l
-ab iselect from uselib.tools import selectData
-let g:quickrun_config = {
-			\   "_" : {
-			\       "outputter" : "message",
-			\   },
-			\}
-let g:quickrun_no_default_key_mappings = 1
-nmap <Leader>r <Plug>(quickrun)
+" ab iopt from cpac.optics import 
+" ab ipnsd from cpac.PNSD import
+" ab imath from cpac.math import
+" ab itool from cpac.tools import 
+" ab icoreshell from coacp.optices import coreshell,internal,exteranl
+" ab iexternal from coacp.optices import coreshell,internal,exteranl
+" ab iinternal from coacp.optices import coreshell,internal,exteranl
+" ab ipf from cpac.optics import PFs_PNSD
+" ab ibcpmsd from cpac.optics import Get_BCpvsd_YF
+" ab ibounds from cpac.PNSD import Get_Dps_bounds
+" ab iangstrom from cpac.BC import angstrom
+" ab ismooth from cpac.math import smooth
+" ab ilineregress from cpac.math import lineregress
+" ab igetdatafromjul from uselib.math import getDataFromJul
+" ab ijul2date from uselib.time import jul2date
+" ab idate2jul from uselib.time import date2ju:l
+" ab iselect from uselib.tools import selectData
+"
+"
+"--------------------------------------------------------------------------
+"Quick Run , don't need
+" let g:quickrun_config = {
+" 			\   "_" : {
+" 			\       "outputter" : "message",
+" 			\   },
+" 			\}
+" let g:quickrun_no_default_key_mappings = 1
+" nmap <Leader>r <Plug>(quickrun)
+"--------------------------------------------------------------------------
 
-"autocomplet:
-let g:ycm_autoclose_preview_window_after_completion=1
 
 
-"Ultisnips YCM
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger      = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
+
+
 
 "clear search highlight
 nnoremap <leader>n :noh <CR>
@@ -1134,6 +1235,10 @@ nnoremap <C-l><C-o>  :lopen <CR>
 nnoremap <C-l><C-c>  :lclose <CR>
 
 
+
+
+"
+
 "quickfix window height
 "au FileType qf call AdjustWindowHeight(3, 10)
 "function! AdjustWindowHeight(minheight, maxheight)
@@ -1147,62 +1252,43 @@ let OPTION_NAME = 1
 let g:polyglot_disabled = ['latex']  
 
 
-"let g:ycm_global_ycm_extra_conf = '~/.vim/data/ycm/.ycm_extra_conf.py'
-" 不显示开启vim时检查ycm_extra_conf文件的信息  
-"let g:ycm_confirm_extra_conf=0
-"" 开启基于tag的补全，可以在这之后添加需要的标签路径  
-"let g:ycm_collect_simulatedidentifiers_from_tags_files=1
-""注释和字符串中的文字也会被收入补全
-"let g:ycm_collect_identifiers_from_comments_and_strings = 0
-"" 输入第2个字符开始补全
-"let g:ycm_min_num_of_chars_for_completion=2
-"" 禁止缓存匹配项,每次都重新生成匹配项
-"let g:ycm_cache_=0
-"" 开启语义补全
-"let g:ycm_seed_identifiers_with_syntax=1	
-""在注释输入中也能补全
-"let g:ycm_complete_in_comments = 1
-""在字符串输入中也能补全
-"let g:ycm_complete_in_strings = 1
-"" 设置在下面几种格式的文件上屏蔽ycm
-"let g:ycm_filetype_blacklist = {
-      "\ 'tagbar' : 1,
-      "\ 'nerdtree' : 1,
-      "\}
-""autocomplete
-"let g:ycm_autoclose_preview_window_after_completion=1
-"let g:ycm_key_invoke_completion = ''
-
-"Ycm autocompletion trigger
-"let g:ycm_key_invoke_completion = '<C-Space>'
-
-"YcmCompleter operation
-" 跳转到定义处
-"nnoremap <leader>gg :YcmCompleter GoTo<CR>
-"nnoremap <leader>gf :YcmCompleter FixIt<CR>
-"nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
-"nnoremap <leader>gt :YcmCompleter GetType<CR>
-"nnoremap <leader>gdc :YcmCompleter GetDoc<CR>
-"nnoremap <leader>gp :YcmCompleter GetParent<CR>
-"nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-"nnoremap <leader>gdf :YcmCompleter GoToDefinition<CR>
-"nnoremap <leader>gdl :YcmCompleter GoToDeclaration<CR>
-"nnoremap <leader>rr :YcmCompleter RefactorRename<CR>
-"nnoremap <leader>sd :YcmShowDetailedDiagnostic<CR>
 
 
-"nnoremap <leader><F6> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
 
-"Dash search
-nmap <silent> <leader>d <Plug>DashSearch
+
+
+
+" --------------------------------------------------------
+"General Mapping
+
+"custom keys
+let mapleader=" "
+
+"inoremap jj <ESC> 
+"nmap <leader>w :w<CR>
+nmap <leader>q :q<CR>
+"nmap <leader>wq :wq<CR>
+nmap gh ^
+nmap gl $
+vmap gh ^
+vmap gl $
 
 "conceallevel 0
 nnoremap <leader>sc :set conceallevel=0 <CR>
 
-let g:qfenter_keymap = {}
-let g:qfenter_keymap.vopen = ['<C-v>']
-let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
-let g:qfenter_keymap.topen = ['<C-t>']
+"nmap <leader>w :w!<cr>
+"nmap <leader>f  :find<cr>
+vmap <C-c> "+y
+map! <C-A> <Esc>ggVGY
+map <C-A> ggVGY
+map <M-F2> :tabnew<CR>  
+map <C-F3> \be  
+"map <F8> :tabnew .<CR>  
+map <C-h> gg=G
+"map <F9> :Tagbar<CR>
+"
+
+" --------------------------------------------------------
 
 " --------------------------------------------------------
 "  setting
@@ -1302,6 +1388,16 @@ set ma
 "Preview window
 set splitbelow
 set splitright
+set noshowmode
+set cursorline
+"非常好的行号设置
+"*********************************************
+set number
+set relativenumber
+
+"I don't like swap files
+set noswapfile
+
 
 "-------------------------------------------------
 "This set meta key
@@ -1311,5 +1407,5 @@ set splitright
 " autocmd FileType python set =python3complete#Complete
 
 
-nnoremap <leader>m : set makeprg=make <CR>
+" nnoremap <leader>m : set makeprg=make <CR>
 
