@@ -1,0 +1,60 @@
+{
+    "editor.fontSize": 14,
+    "editor.fontFamily": "Monaco for Powerline",
+    "python.pythonPath": "/Users/zhoutiangang/anaconda3/bin/python",
+
+
+
+
+    "vim.easymotion": true,
+    "vim.sneak": true,
+    "vim.incsearch": true,
+    "vim.commentary": true,
+    "vim.surround": true,
+    "vim.indent-object": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j","k"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.otherModesKeyBindingsNonRecursive": [
+        {
+            "before": ["g","h"],
+            "after": ["^"]
+        },
+        {
+            "before": ["g","l"],
+            "after": ["$"]
+        },
+        {
+            "before":["<leader>","n"],
+            "after":[],
+            "commands": [
+                {
+                    "command": ":nohl"
+                }
+            ]
+        }
+    ],
+    "vim.leader": "<space>",
+    "vim.handleKeys":{
+        "<C-a>": false,
+        "<C-f>": false
+    }
+}
+
+                    "command": ":nohl"
+                }
+            ]
+        }
+    ],
+    "vim.leader": "<space>",
+    "vim.handleKeys":{
+        "<C-a>": false,
+        "<C-f>": false
+    }
+}
