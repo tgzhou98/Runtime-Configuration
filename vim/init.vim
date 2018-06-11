@@ -144,8 +144,9 @@ call plug#end()
 
 "***********************************************************************
 "Sometimes it is helpful if your working directory is always the same as the file you are editing. To achieve this, put the following in your vimrc:
-set mouse=n
-set ttymouse=xterm2
+
+" set mouse=n
+" set ttymouse=xterm2
 autocmd BufEnter * silent! lcd %:p:h
 
 "scroll set
@@ -230,22 +231,26 @@ noremap <leader>f <Plug>(ale_fix)
 
 "------------------------------------------------------
 "For leaderF python version problem
-if has('python3')
-    command! -nargs=1 Py py3 <args>
-    set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
-    set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
-else
-    command! -nargs=1 Py py <args>
-    set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
-    set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
-endif
+" if has('python3')
+"     command! -nargs=1 Py py3 <args>
+"     set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.6/Python
+"     set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.6
+" else
+"     command! -nargs=1 Py py <args>
+"     set pythondll=/usr/local/Frameworks/Python.framework/Versions/2.7/Python
+"     set pythonhome=/usr/local/Frameworks/Python.framework/Versions/2.7
+" endif
 
 let g:Lf_ShortcutF = '<c-p>'
-let g:Lf_ShortcutB = '<m-b>'
+" let g:Lf_ShortcutB = '<a-b>'
+let g:Lf_ShortcutB = '∫'
 noremap <c-m> :LeaderfMru<cr>
-noremap <m-p> :LeaderfFunction!<cr>
-noremap <m-b> :LeaderfBuffer<cr>
-noremap <m-m> :LeaderfTag<cr>
+" noremap <a-p> :LeaderfFunction!<cr>
+" noremap <a-b> :LeaderfBuffer<cr>
+" noremap <a-m> :LeaderfTag<cr>
+noremap π :LeaderfFunction!<cr>
+noremap ∫ :LeaderfBuffer<cr>
+noremap µ :LeaderfTag<cr>
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
@@ -260,7 +265,7 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
 "------------------------------------------------------
 "Signify Diff
-noremap <m-f> :SignifyDiff<cr>
+noremap <a-f> :SignifyDiff<cr>
 "------------------------------------------------------
 
 "------------------------------------------------------
@@ -288,14 +293,23 @@ nnoremap <silent> <leader>z :Goyo<cr>
 "------------------------------------------------------
 "vim tag preview
 "
-noremap <m-;> :PreviewTag <cr>
+" noremap <a-;> :PreviewTag <cr>
+" noremap <c-m-;> :PreviewClose <cr>
+" noremap <a-u> :PreviewScroll -1<cr>
+" noremap <a-d> :PreviewScroll +1<cr>
+" inoremap <a-u> <c-\><c-o>:PreviewScroll -1<cr>
+" inoremap <a-d> <c-\><c-o>:PreviewScroll +1<cr>
+" noremap <a-q> :PreviewSignature!<cr>
+" inoremap <a-q> <c-\><c-o>:PreviewSignature!<cr>
+
+noremap … :PreviewTag <cr>
 noremap <c-m-;> :PreviewClose <cr>
-noremap <m-u> :PreviewScroll -1<cr>
-noremap <m-d> :PreviewScroll +1<cr>
-inoremap <m-u> <c-\><c-o>:PreviewScroll -1<cr>
-inoremap <m-d> <c-\><c-o>:PreviewScroll +1<cr>
-noremap <m-q> :PreviewSignature!<cr>
-inoremap <m-q> <c-\><c-o>:PreviewSignature!<cr>
+noremap ¨ :PreviewScroll -1<cr>
+noremap ∂ :PreviewScroll +1<cr>
+inoremap ¨ <c-\><c-o>:PreviewScroll -1<cr>
+inoremap ∂ <c-\><c-o>:PreviewScroll +1<cr>
+noremap œ :PreviewSignature!<cr>
+inoremap œ <c-\><c-o>:PreviewSignature!<cr>
 "
 "PreviewClose
 "<c-w> z
@@ -1321,7 +1335,7 @@ nnoremap <leader>sc :set conceallevel=0 <CR>
 vmap <C-c> "+y
 map! <C-A> <Esc>ggVGY
 map <C-A> ggVGY
-map <M-t> :tabnew<CR>  
+map † :tabnew<CR>  
 map <C-F3> \be  
 "map <F8> :tabnew .<CR>  
 map <C-h> gg=G
@@ -1441,9 +1455,8 @@ set noswapfile
 
 "-------------------------------------------------
 "This set meta key
-set macmeta
+" set macmeta
 "-------------------------------------------------
-
 " autocmd FileType python set =python3complete#Complete
 
 
