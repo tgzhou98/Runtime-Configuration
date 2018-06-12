@@ -7,11 +7,11 @@
 
 
     "vim.easymotion": true,
-    "vim.sneak": true,
+    "vim.sneak": false,
     "vim.incsearch": true,
-    "vim.commentary": true,
+    // "vim.commentary": true,
     "vim.surround": true,
-    "vim.indent-object": true,
+    // "vim.indent-object": true,
     "vim.useSystemClipboard": true,
     "vim.useCtrlKeys": true,
     "vim.hlsearch": true,
