@@ -1,6 +1,6 @@
 ##################################################################################
 # local alias
-alias python=python.app
+# alias python=python.app
 ##################################################################################
 
 
@@ -19,7 +19,7 @@ alias python=python.app
 export PATH="${PATH}:/Users/zhoutiangang/anaconda3/bin"
 #export PATH="${PATH}"
 
-export PATH="/usr/local/opt/llvm@5/bin:${PATH}:/opt/local/bin"
+export PATH="/usr/local/opt/llvm@5/bin:${PATH}"
 
 # java need to specify the classpath
 export CLASSPATH="${CLASSPATH}:${HOME}/Program/java"

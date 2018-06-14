@@ -46,6 +46,12 @@ endif
 call plug#begin('~/.vim/plugged')
 
 "Plug 'VundleVim/Vundle.vim'
+Plug 'sillybun/vim-autodoc'
+Plug 'sillybun/vim-repl'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-repeat'
 Plug 'luochen1990/rainbow'
 Plug 'Konfekt/FastFold'
 Plug 'takac/vim-hardtime'
@@ -310,6 +316,9 @@ inoremap ¨ <c-\><c-o>:PreviewScroll -1<cr>
 inoremap ∂ <c-\><c-o>:PreviewScroll +1<cr>
 noremap œ :PreviewSignature!<cr>
 inoremap œ <c-\><c-o>:PreviewSignature!<cr>
+autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
+autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
+
 "
 "PreviewClose
 "<c-w> z
@@ -327,12 +336,58 @@ let g:asyncrun_bell = 1
 " 设置 F10 打开/关闭 Quickfix 窗口
 nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
-nnoremap <silent> <F9> :AsyncRun g++ -Wall -std=c++14 -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+" nnoremap <silent> <F9> :AsyncRun g++ -Wall -std=c++14 -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+" nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] 
 
-nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
-nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make <cr>
+
+nnoremap <silent> <F9> :call AsyncRunCompilefile()<cr>
+function! AsyncRunCompilefile()
+	exec "w"
+	if &filetype == 'c'
+		exec "AsyncRun clang -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'cuda'
+		exec "AsyncRun nvcc -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'cpp'
+		exec "AsyncRun clang++ -Wall -std=c++14 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'shell'
+		exec "AsyncRun bash \"$(VIM_FILEPATH)\" "
+	elseif &filetype == 'java' 
+		exec "AsyncRun javac \"$(VIM_FILEPATH)\" " 
+	elseif &filetype == 'fortran'
+		exec "AsyncRun gfortran -Wall -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	else
+		exec "AsyncRun -raw -cwd=<root> make "
+	endif
+endfunction
+
+nnoremap <silent> <F5> :call AsyncRunRunfile()<cr>
+function! AsyncRunRunfile()
+	exec "w"
+	if &filetype == 'c'
+		exec "AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'cuda'
+		exec "AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'cpp'
+		exec "AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'java' 
+		exec "AsyncRun  java  \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" " 
+	elseif &filetype == 'fortran'
+		exec "AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+	elseif &filetype == 'shell'
+		exec "AsyncRun -raw bash \"$(VIM_FILEPATH)\" "
+	elseif &filetype == 'python'
+		exec "AsyncRun -raw python \"$(VIM_FILEPATH)\" "
+	elseif &filetype == 'gnuplot'
+		exec "AsyncRun -raw gnuplot \"$(VIM_FILEPATH)\" "
+	else
+		exec "AsyncRun -raw -cwd=$(VIM_FILEDIR) \"$(VIM_FILEPATH)\" "
+	endif
+endfunction
+
+" nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
+nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make run <cr>
+nnoremap <silent> <F6> :AsyncRun -raw -cwd=<root> make <cr>
 nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
 
 "disable python stdout buffering
@@ -351,6 +406,15 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
 
+" 同时开启 ctags 和 gtags 支持：
+let g:gutentags_modules = []
+if executable('ctags')
+	let g:gutentags_modules += ['ctags']
+endif
+if executable('gtags-cscope') && executable('gtags')
+	let g:gutentags_modules += ['gtags_cscope']
+endif
+
 " 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let s:vim_tags = expand('~/.cache/tags')
 let g:gutentags_cache_dir = s:vim_tags
@@ -359,6 +423,9 @@ let g:gutentags_cache_dir = s:vim_tags
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" 禁用 gutentags 自动加载 gtags 数据库的行为
+let g:gutentags_auto_add_gtags_cscope = 0
 
 " 检测 ~/.cache/tags 不存在就新建
 if !isdirectory(s:vim_tags)
@@ -387,6 +454,33 @@ let g:rust_fold = 1
 let g:php_folding = 1
 "------------------------------------------------------
 
+
+"------------------------------------------------------
+"PERL vim 
+nnoremap <leader>r :REPLToggle<Cr>
+let g:sendtorepl_invoke_key = "<leader>w"
+let g:repl_program = {
+	\	"python": "/Users/zhoutiangang/anaconda3/bin/python",
+	\	"default": "bash"
+	\	}  
+let g:rep_height = 12
+let g:repl_exit_commands = {
+	\	"zsh": "exit",
+	\	"bash": "exit",
+	\	"default": "exit",
+	\	"python": "exit()",
+	\	}  
+"------------------------------------------------------
+
+
+"------------------------------------------------------
+"Autodoc vim
+" “ 给所有函数加上docstring
+" :RecordParameter
+" “ 给当前光标下的函数加上docstring
+" :RecordCurrentFunction
+" let g:autodoc_typehint_style = "pep526"
+"------------------------------------------------------
 
 "------------------------------------------------------
 "vimtex
