@@ -39,6 +39,8 @@ endif
 "**************************************************
 call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
+
+" Plug 'CodeFalling/fcitx-vim-osx'
 Plug 'sillybun/vim-autodoc'
 Plug 'sillybun/vim-repl'
 Plug 'ludovicchabant/vim-gutentags'
@@ -235,11 +237,29 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "Signify Diff
 " noremap <m-f> :SignifyDiff<cr>
 "------------------------------------------------------
+
 "------------------------------------------------------
 "Only setting for echodoc
 set noshowmode
+set cmdheight=2
 autocmd VimEnter * EchoDocEnable
 "------------------------------------------------------
+
+
+"------------------------------------------------------
+"Multiple-cursor
+function! Multiple_cursors_before()
+	execute youcompleteme#DisableCursorMovedAutocommands() 
+	let g:ycm_auto_trigger = 0
+endfunction
+
+function! Multiple_cursors_after()
+	execute youcompleteme#EnableCursorMovedAutocommands() 
+	let g:ycm_auto_trigger = 1
+endfunction
+"------------------------------------------------------
+
+
 "------------------------------------------------------
 "incsearch.vim
 map /  <Plug>(incsearch-forward)
@@ -386,15 +406,21 @@ let g:sendtorepl_invoke_key = "<leader>w"
 let g:repl_program = {
 	\	"python": "/Users/zhoutiangang/anaconda3/bin/python",
 	\	"gnuplot": "gnuplot",
+	\	"matlab": "matlab -nodesktop -nosplash",
+	\	"cpp.root": "root -l",
+	\	"cpp": "cling -std=c++14",
+	\	"mma": "MathematicaScript",
 	\	"zsh": "zsh",
 	\	"default": "bash",
 	\	}  
+" root -l close splash window and work with stdin 
 let g:repl_height = 15
 let g:repl_width = 30
 let g:repl_position = 3 
 let g:repl_exit_commands = {
-			\	"python": "exit()",
+			\	"/Users/zhoutiangang/anaconda3/bin/python": "exit()",
 			\	"bash": "exit",
+			\	"root": ".q",
 			\	"zsh": "exit",
 			\	"default": "exit",
 			\	}
@@ -755,6 +781,7 @@ au BufRead,BufNewFile *.c	set filetype=c
 au BufRead,BufNewFile *.py	set filetype=python
 au BufRead,BufNewFile *.sh	set filetype=sh
 au BufRead,BufNewFile *.java set filetype=java
+au BufRead,BufNewFile *.C set filetype=cpp.root
 au! Syntax newlang source $VIM/ncl.vim
 " au BufRead,BufNewFile *  setfiletype txt
 autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
