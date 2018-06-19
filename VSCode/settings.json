@@ -1,6 +1,7 @@
 {
     "editor.fontSize": 14,
     "editor.fontFamily": "Monaco for Powerline",
+    "editor.lineNumbers": "relative",
     "python.pythonPath": "/Users/zhoutiangang/anaconda3/bin/python",
 
 
@@ -21,7 +22,7 @@
             "after": ["<Esc>"]
         }
     ],
-    "vim.otherModesKeyBindingsNonRecursive": [
+    "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before": ["g","h"],
             "after": ["^"]
@@ -44,17 +45,6 @@
     "vim.handleKeys":{
         "<C-a>": false,
         "<C-f>": false
-    }
-}
+    },
 
-                    "command": ":nohl"
-                }
-            ]
-        }
-    ],
-    "vim.leader": "<space>",
-    "vim.handleKeys":{
-        "<C-a>": false,
-        "<C-f>": false
-    }
 }

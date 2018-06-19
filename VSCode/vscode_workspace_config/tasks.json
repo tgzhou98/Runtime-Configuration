@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build hello world",
+            "type": "shell",
+            "command": "clang++",
+            "args": [
+                "-O2",
+                "-g",
+                "-std=c++11",
+                "hello.cpp",
+                "-o",
+                "hello"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "run hello world",
+            "type": "shell",
+            "command": "./hello",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$go"
+            ]
+        }
+    ]
+}

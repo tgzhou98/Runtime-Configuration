@@ -138,8 +138,15 @@ call plug#end()
 "
 "***********************************************************************
 "Sometimes it is helpful if your working directory is always the same as the file you are editing. To achieve this, put the following in your vimrc:
-" set mouse=n
-" set ttymouse=xterm2
+"
+"neovim configure
+"------------------------------------------------------
+if !has('nvim')
+    set ttymouse=xterm2
+	set mouse=n
+endif
+"------------------------------------------------------
+"
 autocmd BufEnter * silent! lcd %:p:h
 "scroll set
 " Automatically open, but do not go to (if there are errors) the quickfix /
