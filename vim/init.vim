@@ -41,6 +41,8 @@ call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
 " Plug 'CodeFalling/fcitx-vim-osx'
+Plug 'mhinz/vim-startify'
+Plug 'morhetz/gruvbox'
 Plug 'sillybun/vim-autodoc'
 Plug 'sillybun/vim-repl'
 Plug 'ludovicchabant/vim-gutentags'
@@ -143,7 +145,7 @@ call plug#end()
 "------------------------------------------------------
 if !has('nvim')
     set ttymouse=xterm2
-	set mouse=n
+	set mouse=a
 endif
 "------------------------------------------------------
 "
@@ -289,7 +291,7 @@ nnoremap <silent> <leader>z :Goyo<cr>
 "vim tag preview
 "
 noremap <m-;> :PreviewTag <cr>
-noremap <c-m-;> :PreviewClose <cr>
+noremap <m-'> :PreviewClose <cr>
 noremap <m-u> :PreviewScroll -1<cr>
 noremap <m-d> :PreviewScroll +1<cr>
 inoremap <m-u> <c-\><c-o>:PreviewScroll -1<cr>
@@ -1044,7 +1046,7 @@ function! RemoveFirstSingleComments()
         :.,+0 s/^#//  
     endif  
 endfunction  
-colorscheme solarized  
+colorscheme gruvbox
 "按<F4>键依次修改颜色主题  
 map <F3> :call ChangeColorScheme()<CR>
 let g:csnum = 0
@@ -1281,7 +1283,7 @@ map <C-h> gg=G
 set guifont=Monaco\ for\ Powerline:h15
 "let g:airline_theme="badwolf"
 "
-set pastetoggle=<F10>
+set pastetoggle=<F11>
 set go=             " 不要图形按钮  
 "autocmd InsertLeave * se nocul
 "autocmd InsertEnter * se cul
@@ -1380,6 +1382,11 @@ set noswapfile
 "-------------------------------------------------
 "This set meta key
 " set macmeta
+"-------------------------------------------------
+"
+"-------------------------------------------------
+"For more color 
+set termguicolors
 "-------------------------------------------------
 " autocmd FileType python set =python3complete#Complete
 " nnoremap <leader>m : set makeprg=make <CR>

@@ -41,6 +41,8 @@ call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
 " Plug 'CodeFalling/fcitx-vim-osx'
+Plug 'mhinz/vim-startify'
+Plug 'morhetz/gruvbox'
 Plug 'sillybun/vim-autodoc'
 Plug 'sillybun/vim-repl'
 Plug 'ludovicchabant/vim-gutentags'
@@ -89,7 +91,7 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 Plug 'lervag/vimtex'
 "Plug 'vim-latex/vim-latex'
-Plug 'flazz/vim-colorschemes'
+"Plug 'flazz/vim-colorschemes'
 Plug 'terryma/vim-multiple-cursors'
 "Plug 'vim-scripts/matchit.zip'
 Plug 'tell-k/vim-autopep8'
@@ -283,7 +285,7 @@ nnoremap <silent> <leader>z :Goyo<cr>
 "vim tag preview
 "
 noremap <m-;> :PreviewTag <cr>
-noremap <c-m-;> :PreviewClose <cr>
+noremap <m-'> :PreviewClose <cr>
 noremap <m-u> :PreviewScroll -1<cr>
 noremap <m-d> :PreviewScroll +1<cr>
 inoremap <m-u> <c-\><c-o>:PreviewScroll -1<cr>
@@ -1038,7 +1040,7 @@ function! RemoveFirstSingleComments()
         :.,+0 s/^#//  
     endif  
 endfunction  
-colorscheme solarized  
+colorscheme gruvbox
 "按<F4>键依次修改颜色主题  
 map <F3> :call ChangeColorScheme()<CR>
 let g:csnum = 0
@@ -1375,5 +1377,9 @@ set noswapfile
 "This set meta key
 set macmeta
 "-------------------------------------------------
+"For more color 
+set termguicolors
+"-------------------------------------------------
+"
 " autocmd FileType python set =python3complete#Complete
 " nnoremap <leader>m : set makeprg=make <CR>
