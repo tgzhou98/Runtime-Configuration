@@ -41,6 +41,7 @@ call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
 " Plug 'CodeFalling/fcitx-vim-osx'
+Plug 'tpope/vim-projectionist' "Jump to source and header
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'sillybun/vim-autodoc'
@@ -233,6 +234,7 @@ noremap <c-m> :LeaderfMru<cr>
 noremap <m-p> :LeaderfFunction!<cr>
 noremap <m-b> :LeaderfBuffer<cr>
 noremap <m-m> :LeaderfTag<cr>
+noremap <m-h> :LeaderfHistoryCmd<cr>
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
@@ -257,16 +259,15 @@ autocmd VimEnter * EchoDocEnable
 
 
 "------------------------------------------------------
-"Multiple-cursor
+" vim-multiple-cursors Setup {{{
 function! Multiple_cursors_before()
-	execute youcompleteme#DisableCursorMovedAutocommands() 
-	let g:ycm_auto_trigger = 0
+    call youcompleteme#DisableCursorMovedAutocommands()
 endfunction
 
 function! Multiple_cursors_after()
-	execute youcompleteme#EnableCursorMovedAutocommands() 
-	let g:ycm_auto_trigger = 1
+    call youcompleteme#EnableCursorMovedAutocommands()
 endfunction
+" }}}
 "------------------------------------------------------
 
 
@@ -501,11 +502,34 @@ map  <Leader><Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
 "********************
 "-----------------------------------------------------V
+
+
+"-----------------------------------------------------V
+"Expand region
+"
+map K <Plug>(expand_region_expand)
+map J <Plug>(expand_region_shrink)
+"-----------------------------------------------------V
+
+
+"-----------------------------------------------------V
 "CtrlSF 
 "Be careful!!!!!!!!!
 "<leader>f give to easymotion, don't need f{char} t{char} any more
-let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
-map ff <Plug>CtrlSFPrompt
+"
+"""This map is not used
+" let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+" map ff <Plug>CtrlSFPrompt
+"
+"New map
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " The following is deprecated
 "
 " map F <Plug>CtrlSFQuickfixPrompt
@@ -519,6 +543,7 @@ map ff <Plug>CtrlSFPrompt
 " P preview focus
 " T tab focus
 "-----------------------------------------------------V
+"
 "-----------------------------------------------------V
 "markdown
 " let vim_markdown_preview_hotkey='<C-M>'
@@ -575,11 +600,11 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
 let g:ycm_key_invoke_completion = '<c-Space>'
 set completeopt=menu,menuone
-noremap <c-Space> <NOP>
-let g:ycm_semantic_triggers =  {
-           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-           \ 'cs,lua,javascript': ['re!\w{2}'],
-           \ }
+" noremap <c-Space> <NOP>
+" let g:ycm_semantic_triggers =  {
+"            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+"            \ 'cs,lua,javascript': ['re!\w{2}'],
+"            \ }
 "autocomplet:
 let g:ycm_autoclose_preview_window_after_completion=1
 "----------------------------------------------------------------
@@ -813,11 +838,11 @@ let g:airline_powerline_fonts = 1
 "set guifont=Source\ Code\ Pro\ for\ Powerline:h15
 "autocmd FileType python set =pythoncomplete#Complete
 "autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
-au BufRead,BufNewFile *.ncl set filetype=ncl
-au BufRead,BufNewFile *.tex set filetype=tex
-au! Syntax newlang source $VIM/ncl.vim
-au BufRead,BufNewFile *  setfiletype txt
-autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
+" au BufRead,BufNewFile *.ncl set filetype=ncl
+" au BufRead,BufNewFile *.tex set filetype=tex
+" au! Syntax newlang source $VIM/ncl.vim
+" au BufRead,BufNewFile *  setfiletype txt
+" autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
 "------------------------------------------------------------------------
 "Auto pair
 "Bye bye auto pair
