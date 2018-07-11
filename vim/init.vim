@@ -1,46 +1,46 @@
-"重装cask macvim之后ruby配置好了！！！！！！！！！！！！！
-"这是什么鬼
-"
-"To jump to the next occurrence of the patter you can use :cnext. You can go in reverse with :cNext.
-"I'm not sure of a way to skip all occurrences until the next file automatically, but you could open the quickfix window with :cwindow to see a list of matches and navigate to those matches by hitting Enter on the entry in the list.
-"inoremap jk <ESC>
-"verbose nmap <Leader>w   查看键位的实际映射
-"multi_cursor 只能够用d c来删除一行然后来做，才能使用i 和 a不然用不了
-"!表示使用shell中的语句 !open可以打开pdf，各种编译器
-"当使用ctrlSF时，记得设定project，不然会出错,要记得ctrlSF [] {path}语句
-"或者必须要使用cd语句来引导到当前的working directory
-"在latex－suite中添加新的IMAP语句
-"'` rm' mathrm{}
-"'` bf' textrm{<++>}
-"because auto pair plugin
-"call IMAP (g:Tex_Leader.'3', '\left( <++> \right)<++>', "tex")
-"call IMAP (g:Tex_Leader.'4', '\left[ <++> \right]<++>', "tex")
-"call IMAP (g:Tex_Leader.'5', '\left\{ <++> \right\}<++>', "tex")
-"
-"%  match bucket
-"use :edit to exit X mode
-set nocompatible              " require
+et nocompatible              " require
 "Plug is replace vundle 
 "Hat off to vundle , byebye!!!!!!!!!!!!!!
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 "filetype off                  " required
-" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-" let Vundle manage Vundle, required
-"Plugin 'gmarik/Vundle.vim'
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+
+
+"----------------------------------------------------------------
+" vim-markdonw-composer
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release
+    else
+      !cargo build --release --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+"
+"----------------------------------------------------------------
+
+
 "**************************************************
 call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
 " Plug 'CodeFalling/fcitx-vim-osx'
+" For libclang Syntax highlighting
+" Plug 'jeaye/color_coded'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+" Best alignment
+Plug 'junegunn/vim-easy-align'
+Plug 'godlygeek/tabular'
+
+Plug 'metakirby5/codi.vim'
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+" Plug 'donRaphaco/neotex', { 'for': 'tex' }
+Plug 'tpope/vim-projectionist' "Jump to source and header
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'sillybun/vim-autodoc'
@@ -55,8 +55,8 @@ Plug 'takac/vim-hardtime'
 Plug 'skywind3000/vim-preview'
 Plug 'haya14busa/incsearch.vim'
 Plug 'Yggdroot/indentLine'
-Plug 'junegunn/goyo.vim'
-Plug 'amix/vim-zenroom2'
+" Plug 'junegunn/goyo.vim'
+" Plug 'amix/vim-zenroom2'
 Plug 'mhinz/vim-signify'
 " Plug 'airblade/vim-gitgutter' " Too slowwwwwww!!!!
 Plug 'skywind3000/asyncrun.vim'
@@ -82,7 +82,7 @@ Plug 'rizzatti/dash.vim'
 Plug 'kshenoy/vim-signature'
 "Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
-Plug 'godlygeek/tabular'
+
 " Plug 'plasticboy/vim-markdown'
 " Plug 'shime/vim-livedown'
 "Plug 'JamshedVesuna/vim-markdown-preview'
@@ -91,7 +91,7 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 Plug 'lervag/vimtex'
 "Plug 'vim-latex/vim-latex'
-Plug 'flazz/vim-colorschemes'
+"Plug 'flazz/vim-colorschemes'
 Plug 'terryma/vim-multiple-cursors'
 "Plug 'vim-scripts/matchit.zip'
 Plug 'tell-k/vim-autopep8'
@@ -140,15 +140,16 @@ call plug#end()
 "
 "***********************************************************************
 "Sometimes it is helpful if your working directory is always the same as the file you are editing. To achieve this, put the following in your vimrc:
-"
-"neovim configure
+
+"Some configure for neovim
+
 "------------------------------------------------------
 if !has('nvim')
-    set ttymouse=xterm2
-	set mouse=a
+	set ttymouse=xterm2
+	set mouse=n
 endif
 "------------------------------------------------------
-"
+
 autocmd BufEnter * silent! lcd %:p:h
 "scroll set
 " Automatically open, but do not go to (if there are errors) the quickfix /
@@ -178,6 +179,8 @@ set dictionary+=/usr/share/dict/words
 function! SpellLocalCheck()
 	setlocal spell spelllang=en_us
 endfunction
+"
+"------------------------------------------------------
 "
 "
 "------------------------------------------------------
@@ -213,7 +216,7 @@ let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++14'
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
-let g:ale_sign_error = "\ue009\ue009"
+let g:ale_sign_error = ">>"
 hi! clear SpellBad
 hi! clear SpellCap
 hi! clear SpellRare
@@ -239,6 +242,7 @@ noremap <c-m> :LeaderfMru<cr>
 noremap <m-p> :LeaderfFunction!<cr>
 noremap <m-b> :LeaderfBuffer<cr>
 noremap <m-m> :LeaderfTag<cr>
+noremap <m-h> :LeaderfHistoryCmd<cr>
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
@@ -257,22 +261,21 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "------------------------------------------------------
 "Only setting for echodoc
 set noshowmode
-set cmdheight=2
+" set cmdheight=2
 autocmd VimEnter * EchoDocEnable
 "------------------------------------------------------
 
 
 "------------------------------------------------------
-"Multiple-cursor
+" vim-multiple-cursors Setup {{{
 function! Multiple_cursors_before()
-	execute youcompleteme#DisableCursorMovedAutocommands() 
-	let g:ycm_auto_trigger = 0
+	call youcompleteme#DisableCursorMovedAutocommands()
 endfunction
 
 function! Multiple_cursors_after()
-	execute youcompleteme#EnableCursorMovedAutocommands() 
-	let g:ycm_auto_trigger = 1
+	call youcompleteme#EnableCursorMovedAutocommands()
 endfunction
+" }}}
 "------------------------------------------------------
 
 
@@ -282,11 +285,8 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 "------------------------------------------------------
-"------------------------------------------------------
-" Goyo distracted mood
-" vim-zenroom2 for markdown
-nnoremap <silent> <leader>z :Goyo<cr>
-"------------------------------------------------------
+
+
 "------------------------------------------------------
 "vim tag preview
 "
@@ -304,6 +304,13 @@ autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 "PreviewClose
 "<c-w> z
 "------------------------------------------------------
+"
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+"
 "------------------------------------------------------
 "asyncrun 
 " 自动打开 quickfix window ，高度为 6
@@ -359,9 +366,11 @@ endfunction
 " nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] 
 " nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
-nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make run <cr>
+" nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make run <cr>
+nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> if [[ -f "CMakeLists.txt" ]]; then cd build && ./$(find . -maxdepth 1 -type f -executable -print) && cd .. ; else  make run; fi <cr>
 nnoremap <silent> <F6> :AsyncRun -raw -cwd=<root> make <cr>
-nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
+" nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
+nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> if [[ -f "CMakeLists.txt" ]]; then if [[ -d "build" ]]; then mkdir "build"; fi && cd build && cmake .. && make && cd .. ;fi <cr>
 "disable python stdout buffering
 let $PYTHONUNBUFFERED=1
 "------------------------------------------------------
@@ -390,7 +399,7 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 let g:gutentags_auto_add_gtags_cscope = 0
 " 检测 ~/.cache/tags 不存在就新建
 if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
+	silent! call mkdir(s:vim_tags, 'p')
 endif
 "------------------------------------------------------
 "------------------------------------------------------
@@ -420,15 +429,15 @@ let g:php_folding = 1
 nnoremap <leader>r :REPLToggle<Cr>
 let g:sendtorepl_invoke_key = "<leader>w"
 let g:repl_program = {
-	\	"python": "/Users/zhoutiangang/anaconda3/bin/python",
-	\	"gnuplot": "gnuplot",
-	\	"matlab": "matlab -nodesktop -nosplash",
-	\	"cpp.root": "root -l",
-	\	"cpp": "cling -std=c++14",
-	\	"mma": "MathematicaScript",
-	\	"zsh": "zsh",
-	\	"default": "bash",
-	\	}  
+			\	"python": "/Users/zhoutiangang/anaconda3/bin/python",
+			\	"gnuplot": "gnuplot",
+			\	"matlab": "matlab -nodesktop -nosplash",
+			\	"cpp.root": "root -l",
+			\	"cpp": "cling -std=c++14",
+			\	"mma": "MathematicaScript",
+			\	"zsh": "zsh",
+			\	"default": "bash",
+			\	}  
 " root -l close splash window and work with stdin 
 let g:repl_height = 15
 let g:repl_width = 30
@@ -452,6 +461,13 @@ let g:repl_exit_commands = {
 " let g:autodoc_typehint_style = "pep526"
 "------------------------------------------------------
 
+
+"------------------------------------------------------
+" let g:neotex_pdflatex_alternative = 'latexmk'
+" let g:tex_flavor = 'latex'
+" let g:neotex_latexdiff = 0
+"
+"------------------------------------------------------
 
 "------------------------------------------------------
 "vimtex
@@ -507,11 +523,34 @@ map  <Leader><Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
 "********************
 "-----------------------------------------------------V
+
+
+"-----------------------------------------------------V
+"Expand region
+"
+map K <Plug>(expand_region_expand)
+map J <Plug>(expand_region_shrink)
+"-----------------------------------------------------V
+
+
+"-----------------------------------------------------V
 "CtrlSF 
 "Be careful!!!!!!!!!
 "<leader>f give to easymotion, don't need f{char} t{char} any more
-let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
-map ff <Plug>CtrlSFPrompt
+"
+"""This map is not used
+" let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+" map ff <Plug>CtrlSFPrompt
+"
+"New map
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " The following is deprecated
 "
 " map F <Plug>CtrlSFQuickfixPrompt
@@ -525,6 +564,7 @@ map ff <Plug>CtrlSFPrompt
 " P preview focus
 " T tab focus
 "-----------------------------------------------------V
+"
 "-----------------------------------------------------V
 "markdown
 " let vim_markdown_preview_hotkey='<C-M>'
@@ -547,14 +587,8 @@ nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 let g:multi_cursor_normal_maps ={'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1, 'y':1, '[':1, ']':1, '\':1, 'd':1, 'f':1, 'F':1, 'g':1, '"':1, 'z':1, 'c':1, 'm':1, '<':1, '>':1}
 "Latex syntax conceal
 "------------------------------------------------------------
-"This is solve by unimpaired.vim, my code is not used
-""bufferfile shortcut
-"nnoremap ,bp :bp<CR>    
-"nnoremap ,bn :bn<CR>    
-"nnoremap ,sb :sb<CR>    
-"nnoremap ,b :b<CR>    
-"nnoremap ,bd :bd<CR>    
-"nnoremap ,bw :bw<CR>    
+
+
 "------------------------------------------------------------
 "------------------------------------------------------------
 "Powerful ycm !!!
@@ -581,11 +615,11 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
 let g:ycm_key_invoke_completion = '<c-Space>'
 set completeopt=menu,menuone
-noremap <c-Space> <NOP>
-let g:ycm_semantic_triggers =  {
-           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-           \ 'cs,lua,javascript': ['re!\w{2}'],
-           \ }
+" noremap <c-Space> <NOP>
+" let g:ycm_semantic_triggers =  {
+"            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+"            \ 'cs,lua,javascript': ['re!\w{2}'],
+"            \ }
 "autocomplet:
 let g:ycm_autoclose_preview_window_after_completion=1
 "----------------------------------------------------------------
@@ -593,7 +627,7 @@ let g:ycm_autoclose_preview_window_after_completion=1
 "非常重要
 "注意这个必须放在YCM配置底下底下
 if !exists('g:ycm_semantic_triggers')
-    let g:ycm_semantic_triggers = {}
+	let g:ycm_semantic_triggers = {}
 endif
 let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
 "*************************************************************************************
@@ -619,9 +653,9 @@ let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
 "let g:ycm_complete_in_strings = 1
 "" 设置在下面几种格式的文件上屏蔽ycm
 "let g:ycm_filetype_blacklist = {
-      "\ 'tagbar' : 1,
-      "\ 'nerdtree' : 1,
-      "\}
+"\ 'tagbar' : 1,
+"\ 'nerdtree' : 1,
+"\}
 ""autocomplete
 "let g:ycm_autoclose_preview_window_after_completion=1
 "let g:ycm_key_invoke_completion = ''
@@ -677,30 +711,7 @@ map ,r :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline 
 "--------------------------------------------------------------------------------------------------------
 nnoremap <buffer> ,st :call SetTitle()<cr>
 nnoremap <buffer> ,td :call TitleDet()<cr>
-""Syntastic is outdate 
-" Thank you so much
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_loc_list_height=3
-"let g:syntastic_tex_checkers = ['lacheck']
-"let g:syntastic_python_checkers = ['pyflakes']
-"let g:syntastic_python_flake8_args='--ignore=E265'
-"let g:syntastic_cpp_checkers = ['gcc']
-"let g:syntastic_c_checkers = ['gcc']
-"let g:syntastic_perl_checkers = ['perl']
-"let g:syntastic_matlab_checkers = ['mlint']
-"function! Py2()
-  "let g:syntastic_python_python_exec = '/usr/local/bin/python2'
-"endfunction
-"function! Py3()
-  "let g:syntastic_python_python_exec = '/usr/local/bin/python3'
-"endfunction
-"Auto complete menu
+
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"	"回车即选中当前上下左右键的行为 会显示其他信息
@@ -708,7 +719,6 @@ inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
 inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-"inoremap <leader><leader> <C-x><C-o>
 "--------------------------------------------------------------------------------
 "Rainbow ()
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
@@ -787,7 +797,7 @@ map <F8> :NERDTreeToggle<CR>
 "Filetype autocmd
 "
 "cuda autofile set to cuda.cpp
-autocmd BufNewFile,BufRead *.cu set filetype=cpp
+" autocmd BufNewFile,BufRead *.cu set filetype=cpp
 "autocmd FileType python set =pythoncomplete#Complete
 "autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
 au BufRead,BufNewFile *.ncl set filetype=ncl
@@ -819,11 +829,11 @@ let g:airline_powerline_fonts = 1
 "set guifont=Source\ Code\ Pro\ for\ Powerline:h15
 "autocmd FileType python set =pythoncomplete#Complete
 "autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
-au BufRead,BufNewFile *.ncl set filetype=ncl
-au BufRead,BufNewFile *.tex set filetype=tex
-au! Syntax newlang source $VIM/ncl.vim
-au BufRead,BufNewFile *  setfiletype txt
-autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
+" au BufRead,BufNewFile *.ncl set filetype=ncl
+" au BufRead,BufNewFile *.tex set filetype=tex
+" au! Syntax newlang source $VIM/ncl.vim
+" au BufRead,BufNewFile *  setfiletype txt
+" autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitle()" 
 "------------------------------------------------------------------------
 "Auto pair
 "Bye bye auto pair
@@ -839,10 +849,10 @@ autocmd BufNewFile *.tex,*.cpp,*.[ch],*.sh,*.py,*.java,*.ncl exec ":call SetTitl
 "inoremap <buffer> <silent> ˜ <Esc>:call AutoPairsJump()<CR>
 "inoremap <buffer> <silent> ∫ <C-R>=AutoPairsBackInsert()<CR>
 "if has("gui_macvim")
-  "let g:AutoPairsShortcutToggle     = 'π' " <m-p>
-  "let g:AutoPairsShortcutFastWrap   = '´' " <m-e>
-  "let g:AutoPairsShortcutJump       = '˜' " <m-n>
-  "let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
+"let g:AutoPairsShortcutToggle     = 'π' " <m-p>
+"let g:AutoPairsShortcutFastWrap   = '´' " <m-e>
+"let g:AutoPairsShortcutJump       = '˜' " <m-n>
+"let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
 "endif
 let g:AutoPairsShortcutToggle = ''
 "------------------------------------------------------------------------
@@ -857,15 +867,15 @@ let g:AutoPairsShortcutToggle = ''
 ":inoremap ' ''<ESC>i
 ":inoremap " ""<ESC>i
 "function! ClosePair(char)
-	"if getline('.')[col('.') - 1] == a:char
-		"return "\<Right>"
-	"else
-		"return a:char
-	"endif
+"if getline('.')[col('.') - 1] == a:char
+"return "\<Right>"
+"else
+"return a:char
+"endif
 "endfunction
 "------------------------------------------------------------------------
 function!  SetTitle() 
-		if &filetype == 'sh' 
+	if &filetype == 'sh' 
 		call setline(1,"\#!/bin/bash") 
 		call append(line("."), "\#########################################################################") 
 		call append(line(".")+1, "\# File Name: ".expand("%"))
@@ -1008,43 +1018,43 @@ endfunc
 nnore map <C-2> :vert diffsplit 
 nnoremap <F2> :g/^\s*$/d<CR> 
 function! AddFirstSingleComments()  
-    if &filetype == 'sh'  
-        :.,+0 s/^/#/  
-    elseif &filetype == 'fortran'  
-        :.,+0 s/^/!/  
-    elseif &filetype == 'c'  
-        :.,+0 s#^#//#  
-    elseif &filetype == 'cpp'  
+	if &filetype == 'sh'  
+		:.,+0 s/^/#/  
+	elseif &filetype == 'fortran'  
+		:.,+0 s/^/!/  
+	elseif &filetype == 'c'  
 		:.,+0 s#^#//#  
-    elseif &filetype == 'ncl'  
-        :.,+0 s#^#;#  
-    elseif &filetype == 'tex'  
-        :.,+0 s#^#%#g  
-    elseif &filetype == 'python'  
-        :.,+0 s/^/#/  
-    else  
-        :.,+0 s/^/#/  
-    endif  
+	elseif &filetype == 'cpp'  
+		:.,+0 s#^#//#  
+	elseif &filetype == 'ncl'  
+		:.,+0 s#^#;#  
+	elseif &filetype == 'tex'  
+		:.,+0 s#^#%#g  
+	elseif &filetype == 'python'  
+		:.,+0 s/^/#/  
+	else  
+		:.,+0 s/^/#/  
+	endif  
 endfunction
 "map <silent> <F3> :call RemoveFirstSingleComments()<CR>  
 function! RemoveFirstSingleComments()  
-    if &filetype == 'sh'  
-        :.,+0 s/^#//  
-    elseif &filetype == 'fortran'  
-        :.,+0 s/^!/ /  
-    elseif &filetype == 'c'  
-        :.,+0 s#^//##
-    elseif &filetype == 'ncl'  
-        :.,+0 s#^;##  
-    elseif &filetype == 'cpp'  
-        :.,+0 s#^//##  
-    elseif &filetype == 'tex'  
-        :.,+0 s/^%//  
-    elseif &filetype == 'python'  
-        :.,+0 s/^#//  
-    else  
-        :.,+0 s/^#//  
-    endif  
+	if &filetype == 'sh'  
+		:.,+0 s/^#//  
+	elseif &filetype == 'fortran'  
+		:.,+0 s/^!/ /  
+	elseif &filetype == 'c'  
+		:.,+0 s#^//##
+	elseif &filetype == 'ncl'  
+		:.,+0 s#^;##  
+	elseif &filetype == 'cpp'  
+		:.,+0 s#^//##  
+	elseif &filetype == 'tex'  
+		:.,+0 s/^%//  
+	elseif &filetype == 'python'  
+		:.,+0 s/^#//  
+	else  
+		:.,+0 s/^#//  
+	endif  
 endfunction  
 colorscheme gruvbox
 "按<F4>键依次修改颜色主题  
@@ -1076,8 +1086,8 @@ function! ChangeColorScheme()
 		:colorscheme default
 		:let g:csnum = 8
 	else  
-        :colorscheme evening 
-        :let g:csnum = 0  
+		:colorscheme evening 
+		:let g:csnum = 0  
 	endif  
 endfunction
 "----------------------------------------------------
@@ -1093,34 +1103,34 @@ endfunction
 "
 "map <F5> :call CompileRunGcc()<CR>
 "func! CompileRunGcc()
-	"exec "w"
-	"if &filetype == 'c'
-		"exec "!gcc-7 % -g -o %<"
-		"exec "! ./%<"
-	"elseif &filetype == 'cpp'
-		"exec "!g++-7 % -g -o %<"
-		"exec "! ./%<"
-	"elseif &filetype == 'java' 
-		"exec "!javac %" 
-		"exec "!java %<"	
-	"elseif &filetype == 'matlab'
-		"exec '!matlab -nodesktop -nosplash -r "try, run %:p, pause, catch, end, quit" '
-	"elseif &filetype == 'sh'
-		":!./%
-	"elseif &filetype == 'python'
-		"exec "!python3 %"
-	"elseif &filetype == 'fortran'
-		"exec "!gfortran % -o %<"
-		"exec "! ./%<"
-	"elseif &filetype == 'ncl'
-		"exec "!ncl %"
-	"elseif &filetype == 'tex'
-		"exec "!xelatex %"
-		""exec ""!latexm
-		"exec "!open -a Preview %:r.pdf"
-	"else
-		"exec "!source %"
-	"endif
+"exec "w"
+"if &filetype == 'c'
+"exec "!gcc-7 % -g -o %<"
+"exec "! ./%<"
+"elseif &filetype == 'cpp'
+"exec "!g++-7 % -g -o %<"
+"exec "! ./%<"
+"elseif &filetype == 'java' 
+"exec "!javac %" 
+"exec "!java %<"	
+"elseif &filetype == 'matlab'
+"exec '!matlab -nodesktop -nosplash -r "try, run %:p, pause, catch, end, quit" '
+"elseif &filetype == 'sh'
+":!./%
+"elseif &filetype == 'python'
+"exec "!python3 %"
+"elseif &filetype == 'fortran'
+"exec "!gfortran % -o %<"
+"exec "! ./%<"
+"elseif &filetype == 'ncl'
+"exec "!ncl %"
+"elseif &filetype == 'tex'
+"exec "!xelatex %"
+""exec ""!latexm
+"exec "!open -a Preview %:r.pdf"
+"else
+"exec "!source %"
+"endif
 "endfunc
 func! RunPython()
 	let mp = &makeprg
@@ -1134,10 +1144,10 @@ func! RunPython()
 	let &errorformat = ef
 endfunction
 func! Run_gdb()  
-    exec "w!"  
-    exec "!g++ % -o %< -g"  
-    exec "!cgdb %<"  
-    exec "!del %<"  
+	exec "w!"  
+	exec "!g++ % -o %< -g"  
+	exec "!cgdb %<"  
+	exec "!del %<"  
 endfunction  
 " nnoremap <C-J> <C-W> <C-J>
 " nnoremap <C-K> <C-W> <C-K>
@@ -1147,7 +1157,7 @@ func! SaveInputData()
 	exec "tabnew"
 	exec 'normal "+gP'
 	exec "w! /tmp/input_data"
-	endfunc
+endfunc
 " let g:rbpt_colorpairs = [ ['brown', 'RoyalBlue3'], ['Darkblue', 'SeaGreen3'], ['darkgray', 'DarkOrchid3'], ['darkgreen', 'firebrick3'],['darkcyan', 'RoyalBlue3'],['darkred', 'SeaGreen3'],['darkmagenta', 'DarkOrchid3'],['brown', 'firebrick3'],['gray', 'RoyalBlue3'],['black',       'SeaGreen3'],['darkmagenta', 'DarkOrchid3'],['Darkblue',  'firebrick3'],['darkgreen', 'RoyalBlue3'],['darkcyan', 'SeaGreen3'],['darkred', 'DarkOrchid3'],['red', 'firebrick3']]
 " let g:rbpt_max = 16
 " au VimEnter * RainbowParenthesesToggle
@@ -1159,30 +1169,30 @@ func! SaveInputData()
 " let g:winManagerWidth=30
 " let g:AutoOpenWinManager = 1 "这里要配合修改winmanager.vim文件，见下方说明"
 function! UpdateTitle()
-    normal m'
-    execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
-    normal ''
-    normal mk
-    execute '/# *Filename:/s@:.*$@\=":\t\t".expand("%:t")@'
-    execute "noh"
-    normal 'k
-    echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
+	normal m'
+	execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
+	normal ''
+	normal mk
+	execute '/# *Filename:/s@:.*$@\=":\t\t".expand("%:t")@'
+	execute "noh"
+	normal 'k
+	echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
 endfunction
 "判断前10行代码里面，是否有Last modified这个单词，
 "如果没有的话，代表没有添加过作者信息，需要新添加；
 "如果有的话，那么只需要更新即可
 function! TitleDet()
-    let n=1
-    "默认为添加
-    while n < 10
-        let line = getline(n)
-        if line =~ '^\#\s*\S*Last\smodified:\S*.*$'
-            call UpdateTitle()
-            return
-        endif
-        let n = n + 1
-    endwhile
-    call SetTitle()
+	let n=1
+	"默认为添加
+	while n < 10
+		let line = getline(n)
+		if line =~ '^\#\s*\S*Last\smodified:\S*.*$'
+			call UpdateTitle()
+			return
+		endif
+		let n = n + 1
+	endwhile
+	call SetTitle()
 endfunction
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
@@ -1201,23 +1211,6 @@ let g:autopep8_disable_show_diff=1
 "
 "
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
-" ab iopt from cpac.optics import 
-" ab ipnsd from cpac.PNSD import
-" ab imath from cpac.math import
-" ab itool from cpac.tools import 
-" ab icoreshell from coacp.optices import coreshell,internal,exteranl
-" ab iexternal from coacp.optices import coreshell,internal,exteranl
-" ab iinternal from coacp.optices import coreshell,internal,exteranl
-" ab ipf from cpac.optics import PFs_PNSD
-" ab ibcpmsd from cpac.optics import Get_BCpvsd_YF
-" ab ibounds from cpac.PNSD import Get_Dps_bounds
-" ab iangstrom from cpac.BC import angstrom
-" ab ismooth from cpac.math import smooth
-" ab ilineregress from cpac.math import lineregress
-" ab igetdatafromjul from uselib.math import getDataFromJul
-" ab ijul2date from uselib.time import jul2date
-" ab idate2jul from uselib.time import date2ju:l
-" ab iselect from uselib.tools import selectData
 "
 "
 "--------------------------------------------------------------------------
@@ -1230,6 +1223,23 @@ autocmd BufWritePost $MYVIMRC source $MYVIMRC
 " let g:quickrun_no_default_key_mappings = 1
 " nmap <Leader>r <Plug>(quickrun)
 "--------------------------------------------------------------------------
+"
+"--------------------------------------------------------------------------
+"terminal map
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+"--------------------------------------------------------------------------
+"
 "clear search highlight
 nnoremap <leader>n :noh <CR>
 "copen cclose
@@ -1246,7 +1256,7 @@ nnoremap <C-l><C-c>  :lclose <CR>
 "quickfix window height
 "au FileType qf call AdjustWindowHeight(3, 10)
 "function! AdjustWindowHeight(minheight, maxheight)
-  "exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+"exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 "endfunction
 "python syntax
 "the polyglot python syntax are bad
@@ -1256,8 +1266,6 @@ let g:polyglot_disabled = ['latex']
 "General Mapping
 "custom keys
 let mapleader=" "
-"inoremap jj <ESC> 
-"nmap <leader>w :w<CR>
 nmap <leader>q :q<CR>
 "nmap <leader>wq :wq<CR>
 nmap gh ^
@@ -1280,10 +1288,10 @@ map <C-h> gg=G
 " --------------------------------------------------------
 " --------------------------------------------------------
 "  setting
-set guifont=Monaco\ for\ Powerline:h15
+set guifont=Fire\ Code:h15
 "let g:airline_theme="badwolf"
 "
-set pastetoggle=<F11>
+set pastetoggle=<F10>
 set go=             " 不要图形按钮  
 "autocmd InsertLeave * se nocul
 "autocmd InsertEnter * se cul
@@ -1312,14 +1320,14 @@ set completeopt=longest,menu
 " this are not work
 " ----------------------------------------------
 ""if $TMUX == ''
-    ""set clipboard+=unnamed
+""set clipboard+=unnamed
 ""endif
 "" yank to clipboard
 "if has("clipboard")
-  "set clipboard=unnamed " copy to the system clipboard
-  "if has("unnamedplus") " X11 support
-    "set clipboard+=unnamedplus
-  "endif
+"set clipboard=unnamed " copy to the system clipboard
+"if has("unnamedplus") " X11 support
+"set clipboard+=unnamedplus
+"endif
 "endif
 " ----------------------------------------------
 "  this work
@@ -1330,9 +1338,9 @@ set clipboard=unnamed " copy to the system clipboard
 set shell=/bin/bash
 "to use interactive mode
 set shellcmdflag=-ic
-	" if something bad happend
-	"use the next instead
-	"let $BASH_ENV = "~/.bashrc"
+" if something bad happend
+"use the next instead
+"let $BASH_ENV = "~/.bashrc"
 set nobackup
 set autowrite
 set ruler                 " 打开状态栏标尺
@@ -1381,12 +1389,29 @@ set relativenumber
 set noswapfile
 "-------------------------------------------------
 "This set meta key
-" set macmeta
-"-------------------------------------------------
 "
+if has("gui_macvim")
+	set macmeta
+endif
 "-------------------------------------------------
 "For more color 
 set termguicolors
 "-------------------------------------------------
+"
 " autocmd FileType python set =python3complete#Complete
 " nnoremap <leader>m : set makeprg=make <CR>
+"
+"multi_cursor 只能够用d c来删除一行然后来做，才能使用i 和 a不然用不了
+"!表示使用shell中的语句 !open可以打开pdf，各种编译器
+"当使用ctrlSF时，记得设定project，不然会出错,要记得ctrlSF [] {path}语句
+"或者必须要使用cd语句来引导到当前的working directory
+"在latex－suite中添加新的IMAP语句
+"'` rm' mathrm{}
+"'` bf' textrm{<++>}
+"because auto pair plugin
+"call IMAP (g:Tex_Leader.'3', '\left( <++> \right)<++>', "tex")
+"call IMAP (g:Tex_Leader.'4', '\left[ <++> \right]<++>', "tex")
+"call IMAP (g:Tex_Leader.'5', '\left\{ <++> \right\}<++>', "tex")
+"
+"%  match bucket
+"use :edit to exit X mode

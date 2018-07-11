@@ -16,7 +16,7 @@
 # /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
 # add nvidia cuda path , only work with apple-clang
 #export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS"
-export PATH="${PATH}:/Users/zhoutiangang/anaconda3/bin"
+export PATH="/Users/zhoutiangang/anaconda3/bin:${PATH}"
 #export PATH="${PATH}"
 
 # export PATH="/usr/local/opt/llvm@5/bin:${PATH}"
@@ -126,8 +126,8 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bott
 
 # setting alias
 
-alias gcc='gcc-7'
-alias g++='g++-7'
+alias gcc='gcc-8'
+alias g++='g++-8'
 
 alias vimconfig='vim ~/.vimrc'
 alias zshconfig='vim ~/.zshrc'
@@ -148,6 +148,7 @@ alias tree='tree -Ch'
 
 #terminating alias
 
+alias find='/usr/local/bin/gfind'
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
@@ -174,6 +175,20 @@ mcd () { mkdir -p "$1" && cd "$1"; }        # mcd:          Makes new Dir and ju
 trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the MacOS trash
 ql () { qlmanage -p "$*" >& /dev/null; }    # ql:           Opens any file in MacOS Quicklook Preview
 alias DT='tee ~/Desktop/terminalOut.txt'    # DT:           Pipe content to file on MacOS Desktop
+
+# Codi
+# Usage: codi [filetype] [filename]
+codi() {
+  local syntax="${1:-python}"
+  shift
+  gvim -c \
+    "let g:startify_disable_at_vimenter = 1 |\
+    set bt=nofile ls=0 noru nonu nornu |\
+    hi ColorColumn ctermbg=NONE |\
+    hi VertSplit ctermbg=NONE |\
+    hi NonText ctermfg=0 |\
+    Codi $syntax" "$@"
+}
 
 #   lr:  Full Recursive Directory Listing
 #   ------------------------------------------
