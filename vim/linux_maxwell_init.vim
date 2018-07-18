@@ -28,12 +28,12 @@ endfunction
 call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
+Plug 'alejandrogallo/vasp.vim'
 " Plug 'CodeFalling/fcitx-vim-osx'
 " For libclang Syntax highlighting
 " Plug 'jeaye/color_coded'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'ericcurtin/CurtineIncSw.vim'
-
 " Best alignment
 Plug 'junegunn/vim-easy-align'
 Plug 'godlygeek/tabular'
@@ -183,22 +183,12 @@ function! SpellLocalCheck()
 endfunction
 "
 "------------------------------------------------------
-"
-"
+
 "------------------------------------------------------
 " neovim
-"
-if has('nvim')
-	let g:python2_host_prog = '/usr/local/bin/python2'
-	let g:python3_host_prog = '/usr/local/bin/python3'
-endif
+let g:python3_host_prog = '/home/tgzhou/anaconda3/bin/python'
 "------------------------------------------------------
-"
-"
-"------------------------------------------------------
-" 'ericcurtin/CurtineIncSw.vim'
-map <leader>h :call CurtineIncSw()<CR>
-"------------------------------------------------------
+
 
 "------------------------------------------------------
 "
@@ -216,18 +206,22 @@ let g:ale_cpp_clangtidy_executable = ''
 let g:ale_cpp_clangcheck_executable = ''
 let g:ale_cpp_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4}'"  "indent is important
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4}'"  "indent is important
+let g:ale_python_flake8_executable = '/home/tgzhou/anaconda3/bin/flake8'
+let g:ale_python_mypy_executable = '/home/tgzhou/anaconda3/bin/mypy'
+let g:ale_python_pylint_executable = '/home/tgzhou/anaconda3/bin/pylint'
 let g:ale_fixers = { 
 			\ 'python': ['yapf'],
 			\ 'cpp': ['clang-format'],
 			\ 'c': ['clang-format'],
 			\ 'sh': ['shfmt'],
 			\}
-let g:ale_cpp_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
-let g:ale_c_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
-let g:ale_c_clang_options = '-Wall -O2 -std=c11'
-let g:ale_cpp_clang_options = '-Wall -O2 -std=c++14'
+let g:ale_cpp_clangformat_executable = '/home/tgzhou/.local/llvm/bin/clang-format'
+let g:ale_c_clangformat_executable = '/home/tgzhou/.local/llvm/bin/clang-format'
+let g:ale_cpp_cppcheck_executable = '/home/tgzhou/.local/bin/cppcheck'
+let g:ale_cpp_clang_executable = '/home/tgzhou/.local/llvm/bin/clang'
+let g:ale_c_clang_executable = '/home/tgzhou/.local/llvm/bin/clang'
 let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_cpp_clang_options = '-Wall -O2 -std=c++14'
 let g:ale_c_cppcheck_options = '--enable=all --inconclusive --std=c11'
 let g:ale_cpp_cppcheck_options = '--enable=all --inconclusive --std=c++14'
 let g:ale_sign_error = ">>"
@@ -337,11 +331,11 @@ nnoremap <silent> <F9> :call AsyncRunCompilefile()<cr>
 function! AsyncRunCompilefile()
 	exec "w"
 	if &filetype == 'c'
-		exec "AsyncRun clang -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+		exec "AsyncRun gcc -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
 	elseif &filetype == 'cuda'
 		exec "AsyncRun nvcc -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
 	elseif &filetype == 'cpp'
-		exec "AsyncRun clang++ -Wall -std=c++14 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+		exec "AsyncRun g++ -Wall -std=c++14 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
 	elseif &filetype == 'shell'
 		exec "AsyncRun bash \"$(VIM_FILEPATH)\" "
 	elseif &filetype == 'java' 
@@ -382,6 +376,7 @@ let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml']
 " nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
 " nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make run <cr>
 nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> if [[ -f "CMakeLists.txt" ]]; then cd build && ./$(find . -maxdepth 1 -type f -executable -print) && cd .. ; else  make run; fi <cr>
+
 nnoremap <silent> <F6> :AsyncRun -raw -cwd=<root> make <cr>
 " nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
 nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> if [[ -f "CMakeLists.txt" ]]; then if [[ -d "build" ]]; then mkdir "build"; fi && cd build && cmake .. && make && cd .. ;fi <cr>
@@ -443,7 +438,7 @@ let g:php_folding = 1
 nnoremap <leader>r :REPLToggle<Cr>
 let g:sendtorepl_invoke_key = "<leader>w"
 let g:repl_program = {
-			\	"python": "/Users/zhoutiangang/anaconda3/bin/python",
+			\	"python": "${HOME}/anaconda3/bin/python",
 			\	"gnuplot": "gnuplot",
 			\	"matlab": "matlab -nodesktop -nosplash",
 			\	"cpp.root": "root -l",
@@ -457,7 +452,7 @@ let g:repl_height = 15
 let g:repl_width = 30
 let g:repl_position = 3 
 let g:repl_exit_commands = {
-			\	"/Users/zhoutiangang/anaconda3/bin/python": "exit()",
+			\	"${HOME}/anaconda3/bin/python": "exit()",
 			\	"bash": "exit",
 			\	"root": ".q",
 			\	"zsh": "exit",
@@ -611,10 +606,10 @@ let g:multi_cursor_normal_maps ={'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1
 "filetype plugin indent on
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 " let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
-let g:ycm_python_binary_path = '/Users/zhoutiangang/anaconda3/bin/python3'
+let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python3'
 "
 " Specify virtual enviroment 
-let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
+let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python3'
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 let gLeaderlFold_docstring_preview = 1
@@ -811,7 +806,7 @@ map <F8> :NERDTreeToggle<CR>
 "Filetype autocmd
 "
 "cuda autofile set to cuda.cpp
-" autocmd BufNewFile,BufRead *.cu set filetype=cpp
+autocmd BufNewFile,BufRead *.cu set filetype=cuda
 "autocmd FileType python set =pythoncomplete#Complete
 "autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
 au BufRead,BufNewFile *.ncl set filetype=ncl
@@ -1302,10 +1297,10 @@ map <C-h> gg=G
 " --------------------------------------------------------
 " --------------------------------------------------------
 "  setting
-set guifont=Fire\ Code:h15
+set guifont=Fira\ Mono\ for\ Powerline\ 13
 "let g:airline_theme="badwolf"
 "
-set pastetoggle=<F10>
+set pastetoggle=<F11>
 set go=             " 不要图形按钮  
 "autocmd InsertLeave * se nocul
 "autocmd InsertEnter * se cul

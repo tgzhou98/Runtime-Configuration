@@ -201,7 +201,6 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-
 # 
 # 
 # -------------------------------------------------------------------
@@ -214,8 +213,10 @@ alias ls='ls --color=auto'
 alias grep='ggrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias egrep='gegrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias fgrep='gfgrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias sed='gsed'
-alias awk='gawk'
+alias sed='/usr/local/bin/gsed'
+alias awk='/usr/local/bin/gawk'
+alias grep='/usr/local/bin/ggrep'
+alias find='/usr/local/bin/gfind'
 # best which alias (show alias options)
 alias which='alias | gwhich --tty-only --read-alias --show-dot --show-tilde'
 
@@ -274,3 +275,29 @@ i() { cd "$(cat ~/.save_dir)" ; }
 
 #
 # finis
+
+#PATH="/Users/zhoutiangang/perl5/bin${PATH:+:${PATH}}"; export PATH;
+#PERL5LIB="/Users/zhoutiangang/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+#PERL_LOCAL_LIB_ROOT="/Users/zhoutiangang/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+#PERL_MB_OPT="--install_base \"/Users/zhoutiangang/perl5\""; export PERL_MB_OPT;
+#PERL_MM_OPT="INSTALL_BASE=/Users/zhoutiangang/perl5"; export PERL_MM_OPT;
+#
+
+#FZF
+j() {
+    if [[ "$#" -ne 0 ]]; then
+        cd $(autojump $@)
+        return
+    fi
+    cd "$(autojump -s | sed '/_____/Q; s/^[0-9,.:]*\s*//' |  fzf --height 40% --nth 1.. --reverse --inline-info +s --tac --query "${*##-* }" )"
+}
+
+# fasd
+z() {
+  local dir
+  dir="$(fasd -Rdl "$1" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+}
+
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

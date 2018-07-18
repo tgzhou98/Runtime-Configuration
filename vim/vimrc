@@ -28,10 +28,12 @@ endfunction
 call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
+Plug 'alejandrogallo/vasp.vim'
 " Plug 'CodeFalling/fcitx-vim-osx'
 " For libclang Syntax highlighting
 " Plug 'jeaye/color_coded'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+Plug 'ericcurtin/CurtineIncSw.vim'
 " Best alignment
 Plug 'junegunn/vim-easy-align'
 Plug 'godlygeek/tabular'
@@ -183,6 +185,11 @@ endfunction
 "------------------------------------------------------
 
 "------------------------------------------------------
+" 'ericcurtin/CurtineIncSw.vim'
+map <leader>h :call CurtineIncSw()<CR>
+"------------------------------------------------------
+
+"------------------------------------------------------
 "
 "ale setting
 let g:ale_linters_explicit = 0 " only run linter you specified
@@ -202,13 +209,16 @@ let g:ale_fixers = {
 			\ 'python': ['yapf'],
 			\ 'cpp': ['clang-format'],
 			\ 'c': ['clang-format'],
+			\ 'sh': ['shfmt'],
 			\}
 let g:ale_cpp_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
 let g:ale_c_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_c_clang_options = '-Wall -O2 -std=c99'
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++14'
-let g:ale_c_cppcheck_options = ''
-let g:ale_cpp_cppcheck_options = ''
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = '--enable=all --inconclusive --std=c11'
+let g:ale_cpp_cppcheck_options = '--enable=all --inconclusive --std=c++14'
 let g:ale_sign_error = ">>"
 hi! clear SpellBad
 hi! clear SpellCap

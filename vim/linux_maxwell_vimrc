@@ -1,3 +1,19 @@
+"----------------------------------------------------------------
+" vim-markdonw-composer
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release
+    else
+      !cargo build --release --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+"
+"----------------------------------------------------------------
+"
+"%  match bucket
+"use :edit to exit X mode
 set nocompatible              " require
 "Plug is replace vundle 
 "Hat off to vundle , byebye!!!!!!!!!!!!!!
@@ -6,20 +22,30 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-"filetype off                  " required
-" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-" let Vundle manage Vundle, required
-"Plugin 'gmarik/Vundle.vim'
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+
+"----------------------------------------------------------------
+"
+let mysyntaxfile = "~/.vim/mysyntax.vim"
+
 "**************************************************
 call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
 
 " Plug 'CodeFalling/fcitx-vim-osx'
+Plug 'alejandrogallo/vasp.vim'
+" Plug 'CodeFalling/fcitx-vim-osx'
+" For libclang Syntax highlighting
+" Plug 'jeaye/color_coded'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+Plug 'ericcurtin/CurtineIncSw.vim'
+" Best alignment
+Plug 'junegunn/vim-easy-align'
+Plug 'godlygeek/tabular'
+
+Plug 'metakirby5/codi.vim'
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+" Plug 'donRaphaco/neotex', { 'for': 'tex' }
 Plug 'tpope/vim-projectionist' "Jump to source and header
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
@@ -171,6 +197,7 @@ let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:airline#extensions#ale#enabled = 1
+let g:ale_python_mypy_options = '--python-executable /home/tgzhou/anaconda3/bin/python'
 let g:ale_cpp_clangtidy_options = '-extra-arg=-std=c++14'
 let g:ale_cpp_clangtidy_executable = ''
 let g:ale_cpp_clangcheck_executable = ''
@@ -181,13 +208,14 @@ let g:ale_fixers = {
 			\ 'cpp': ['clang-format'],
 			\ 'c': ['clang-format'],
 			\}
-let g:ale_cpp_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
-let g:ale_c_clangformat_executable = '/usr/local/opt/llvm@5/bin/clang-format'
+let g:ale_cpp_clangformat_executable = '/home/tgzhou/.local/llvm/bin/clang-format'
+let g:ale_c_clangformat_executable = '/home/tgzhou/.local/llvm/bin/clang-format'
 let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++14'
-let g:ale_c_cppcheck_options = ''
-let g:ale_cpp_cppcheck_options = ''
-let g:ale_sign_error = "\ue009\ue009"
+let g:ale_cpp_cppcheck_executable = '/home/tgzhou/.local/bin/cppcheck'
+let g:ale_c_cppcheck_options = '--enable=all --inconclusive --std=c11'
+let g:ale_cpp_cppcheck_options = '--enable=all --inconclusive --std=c++14'
+let g:ale_sign_error = ">>"
 hi! clear SpellBad
 hi! clear SpellCap
 hi! clear SpellRare
@@ -290,11 +318,11 @@ nnoremap <silent> <F9> :call AsyncRunCompilefile()<cr>
 function! AsyncRunCompilefile()
 	exec "w"
 	if &filetype == 'c'
-		exec "AsyncRun clang -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+		exec "AsyncRun gcc -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
 	elseif &filetype == 'cuda'
 		exec "AsyncRun nvcc -Wall -std=c11 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
 	elseif &filetype == 'cpp'
-		exec "AsyncRun clang++ -Wall -std=c++14 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
+		exec "AsyncRun g++ -Wall -std=c++14 -O2 \"$(VIM_FILEPATH)\" -o \"$(VIM_FILEDIR)/$(VIM_FILENOEXT)\" "
 	elseif &filetype == 'shell'
 		exec "AsyncRun bash \"$(VIM_FILEPATH)\" "
 	elseif &filetype == 'java' 
@@ -333,9 +361,12 @@ endfunction
 " nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] 
 " nnoremap <silent> <F6> :AsyncRun -raw python % <cr>
-nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make run <cr>
+" nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> make run <cr>
+nnoremap <silent> <F7> :AsyncRun -raw -cwd=<root> if [[ -f "CMakeLists.txt" ]]; then cd build && ./$(find . -maxdepth 1 -type f -executable -print) && cd .. ; else  make run; fi <cr>
 nnoremap <silent> <F6> :AsyncRun -raw -cwd=<root> make <cr>
-nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
+nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> if [[ -f "CMakeLists.txt" ]]; then if [[ -d "build" ]]; then mkdir "build"; fi && cd build && cmake .. && make && cd .. ;fi <cr>
+" nnoremap <silent> <F4> :AsyncRun -raw -cwd=<root> cmake . <cr>
+
 "disable python stdout buffering
 let $PYTHONUNBUFFERED=1
 "------------------------------------------------------
@@ -564,7 +595,7 @@ let g:multi_cursor_normal_maps ={'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1
 let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python3'
 "
 " Specify virtual enviroment 
-let g:ycm_server_python_interpreter ='/usr/local/bin/python3'
+let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python3'
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 let gLeaderlFold_docstring_preview = 1
@@ -814,7 +845,7 @@ let g:airline_theme='powerlineish'
 "Airline tab
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-"set guifont=Source\ Code\ Pro\ for\ Powerline:h15
+set guifont=Fira\ Mono\ for\ Powerline\ 13
 "autocmd FileType python set =pythoncomplete#Complete
 "autocmd FileType cpp map <buffer> <leader><space> :w<cr>:make<cr>
 " au BufRead,BufNewFile *.ncl set filetype=ncl
@@ -1152,8 +1183,10 @@ func! SaveInputData()
 " au Syntax * RainbowParenthesesLoadRound
 " au Syntax * RainbowParenthesesLoadSquare
 " au Syntax * RainbowParenthesesLoadBraces
-
-
+" " winmanager"
+" let g:winManagerWindowLayout='NERDTree|Tagbar'
+" let g:winManagerWidth=30
+" let g:AutoOpenWinManager = 1 "这里要配合修改winmanager.vim文件，见下方说明"
 function! UpdateTitle()
     normal m'
     execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
@@ -1258,10 +1291,10 @@ map <C-h> gg=G
 " --------------------------------------------------------
 " --------------------------------------------------------
 "  setting
-set guifont=Monaco\ for\ Powerline:h15
+" set guifont=Monaco\ for\ Powerline:h15
 "let g:airline_theme="badwolf"
 "
-set pastetoggle=<F10>
+set pastetoggle=<F11>
 set go=             " 不要图形按钮  
 "autocmd InsertLeave * se nocul
 "autocmd InsertEnter * se cul
@@ -1370,25 +1403,3 @@ set termguicolors
 "
 " autocmd FileType python set =python3complete#Complete
 " nnoremap <leader>m : set makeprg=make <CR>
-"
-"重装cask macvim之后ruby配置好了！！！！！！！！！！！！！
-"这是什么鬼
-"
-"To jump to the next occurrence of the patter you can use :cnext. You can go in reverse with :cNext.
-"I'm not sure of a way to skip all occurrences until the next file automatically, but you could open the quickfix window with :cwindow to see a list of matches and navigate to those matches by hitting Enter on the entry in the list.
-"inoremap jk <ESC>
-"verbose nmap <Leader>w   查看键位的实际映射
-"multi_cursor 只能够用d c来删除一行然后来做，才能使用i 和 a不然用不了
-"!表示使用shell中的语句 !open可以打开pdf，各种编译器
-"当使用ctrlSF时，记得设定project，不然会出错,要记得ctrlSF [] {path}语句
-"或者必须要使用cd语句来引导到当前的working directory
-"在latex－suite中添加新的IMAP语句
-"'` rm' mathrm{}
-"'` bf' textrm{<++>}
-"because auto pair plugin
-"call IMAP (g:Tex_Leader.'3', '\left( <++> \right)<++>', "tex")
-"call IMAP (g:Tex_Leader.'4', '\left[ <++> \right]<++>', "tex")
-"call IMAP (g:Tex_Leader.'5', '\left\{ <++> \right\}<++>', "tex")
-"
-"%  match bucket
-"use :edit to exit X mode
