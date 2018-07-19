@@ -73,7 +73,7 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bott
 #. ~/.bash_profile  # don't use this, because this can cause a dead loop
 
 # fasd
-eval "$(fasd --init auto)"
+eval "$(/usr/local/bin/fasd --init auto)"
 
 # FZF
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
@@ -549,4 +549,4 @@ httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grab
 #   then use: ~/Dev/Perl/randBytes 1048576 > 10MB.dat
 
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -z "$ZSH_NAME" ] && [ -f ~/.fzf.bash ] && source ~/.fzf.bash

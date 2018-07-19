@@ -216,6 +216,7 @@ let g:ale_cpp_clangtidy_executable = ''
 let g:ale_cpp_clangcheck_executable = ''
 let g:ale_cpp_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4}'"  "indent is important
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4}'"  "indent is important
+let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=skip'
 let g:ale_fixers = { 
 			\ 'python': ['yapf'],
 			\ 'cpp': ['clang-format'],

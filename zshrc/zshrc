@@ -168,6 +168,9 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 
 source $ZSH/oh-my-zsh.sh
 
+#... and finally load the plugin, which will now detect fasd
+source $ZSH/plugins/fasd/fasd.plugin.zsh
+
 # User configuration
 
  export MANPATH="/usr/local/man:$MANPATH"
@@ -177,7 +180,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
+   export EDITOR='nvim'
  else
    export EDITOR='mvim'
  fi
@@ -292,12 +295,16 @@ j() {
     cd "$(autojump -s | sed '/_____/Q; s/^[0-9,.:]*\s*//' |  fzf --height 40% --nth 1.. --reverse --inline-info +s --tac --query "${*##-* }" )"
 }
 
+
+
 # fasd
 z() {
   local dir
   dir="$(fasd -Rdl "$1" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
 }
 
+
+alias fasd=/usr/local/bin/fasd
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

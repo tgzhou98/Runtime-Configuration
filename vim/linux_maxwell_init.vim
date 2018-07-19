@@ -208,7 +208,9 @@ let g:ale_cpp_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4}'"  "indent is important
 let g:ale_python_flake8_executable = '/home/tgzhou/anaconda3/bin/flake8'
 let g:ale_python_mypy_executable = '/home/tgzhou/anaconda3/bin/mypy'
+let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=skip'
 let g:ale_python_pylint_executable = '/home/tgzhou/anaconda3/bin/pylint'
+let g:ale_python_yapf_executable = '/home/tgzhou/anaconda3/bin/yapf'
 let g:ale_fixers = { 
 			\ 'python': ['yapf'],
 			\ 'cpp': ['clang-format'],
@@ -251,6 +253,7 @@ noremap <m-p> :LeaderfFunction!<cr>
 noremap <m-b> :LeaderfBuffer<cr>
 noremap <m-m> :LeaderfTag<cr>
 noremap <m-h> :LeaderfHistoryCmd<cr>
+let g:Lf_Ctags = "/home/tgzhou/.local/bin/ctags"
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
@@ -391,12 +394,20 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 let g:gutentags_ctags_tagfile = '.tags'
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
+let g:gutentags_ctags_executable = '/home/tgzhou/.local/bin/ctags'
+let g:gutentags_gtags_executable = '/home/tgzhou/.local/bin/gtags'
+let g:gutentags_cscope_executable = '/home/tgzhou/.local/bin/gtags-cscope'
 if executable('ctags')
 	let g:gutentags_modules += ['ctags']
 endif
 if executable('gtags-cscope') && executable('gtags')
 	let g:gutentags_modules += ['gtags_cscope']
 endif
+
+" " Have to do this
+let g:gutentags_modules += ['ctags']
+let g:gutentags_modules += ['gtags_cscope']
+
 " 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let s:vim_tags = expand('~/.cache/tags')
 let g:gutentags_cache_dir = s:vim_tags
@@ -404,6 +415,7 @@ let g:gutentags_cache_dir = s:vim_tags
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--python-kinds=-iv -R']
 " 禁用 gutentags 自动加载 gtags 数据库的行为
 let g:gutentags_auto_add_gtags_cscope = 0
 " 检测 ~/.cache/tags 不存在就新建
@@ -606,10 +618,10 @@ let g:multi_cursor_normal_maps ={'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1
 "filetype plugin indent on
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 " let g:ycm_server_python_interpreter ='/Users/zhoutiangang/anaconda3/bin/python3'
-let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python3'
+let g:ycm_python_binary_path = '/home/tgzhou/anaconda3/bin/python'
 "
 " Specify virtual enviroment 
-let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python3'
+let g:ycm_server_python_interpreter ='/home/tgzhou/anaconda3/bin/python'
 "let g:ycm_server_python_interpreter ='/usr/bin/python'
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 let gLeaderlFold_docstring_preview = 1
@@ -1344,7 +1356,7 @@ set clipboard=unnamed " copy to the system clipboard
 " ----------------------------------------------
 """ cannot use this in the terminal vim
 " bashcommand
-set shell=/bin/bash
+set shell=bash\ -l
 "to use interactive mode
 set shellcmdflag=-ic
 " if something bad happend
