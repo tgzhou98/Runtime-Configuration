@@ -27,12 +27,16 @@ endfunction
 "**************************************************
 call plug#begin('~/.vim/plugged')
 "Plug 'VundleVim/Vundle.vim'
-
+Plug 'heavenshell/vim-pydocstring'
+Plug 'alejandrogallo/vasp.vim'
+Plug 'tpope/vim-sensible'
 " Plug 'CodeFalling/fcitx-vim-osx'
 " For libclang Syntax highlighting
 " Plug 'jeaye/color_coded'
+Plug 'alejandrogallo/vasp.vim'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'tenfyzhong/CompleteParameter.vim'
 
 " Best alignment
 Plug 'junegunn/vim-easy-align'
@@ -100,6 +104,7 @@ Plug 'tell-k/vim-autopep8'
 Plug 'ervandew/supertab' 
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
+Plug 'tenfyzhong/CompleteParameter.vim' "put after ultisnips
 Plug 'scrooloose/nerdtree'
 "Plug 'Xuyuanp/nerdtree-git-Plug'
 "Plug 'jistr/vim-nerdtree-tabs'
@@ -218,7 +223,7 @@ let g:ale_cpp_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, IndentWidth: 4}'"  "indent is important
 let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=skip'
 let g:ale_fixers = { 
-			\ 'python': ['yapf'],
+			\ 'python': ['yapf', 'isort'],
 			\ 'cpp': ['clang-format'],
 			\ 'c': ['clang-format'],
 			\ 'sh': ['shfmt'],
@@ -603,6 +608,27 @@ let g:multi_cursor_normal_maps ={'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1
 "Latex syntax conceal
 "------------------------------------------------------------
 
+"------------------------------------------------------------
+"Plug 'tenfyzhong/CompleteParameter.vim'
+inoremap <silent><expr> ( complete_parameter#pre_complete("()")
+"Goto next parameter and select it.
+nmap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+"Goto previous parameter and select it.
+nmap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+"Select next overload function.
+nmap <m-d> <Plug>(complete_parameter#overload_down)
+imap <m-d> <Plug>(complete_parameter#overload_down)
+smap <m-d> <Plug>(complete_parameter#overload_down)
+"Select previous overload function.
+nmap <m-u> <Plug>(complete_parameter#overload_up)
+imap <m-u> <Plug>(complete_parameter#overload_up)
+smap <m-u> <Plug>(complete_parameter#overload_up)
+"------------------------------------------------------------
+
 
 "------------------------------------------------------------
 "------------------------------------------------------------
@@ -700,6 +726,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger      = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 "--------------------------------------------------------------------------
 "------------------------------------------------------------------
 "Dash search
@@ -870,6 +897,11 @@ let g:airline_powerline_fonts = 1
 "let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
 "endif
 let g:AutoPairsShortcutToggle = ''
+"############################################
+"Work well with complete_paramters
+let g:AutoPairsShortcutToggle = ''
+let g:AutoPairs = {'[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+inoremap <buffer><silent> ) <C-R>=AutoPairsInsert(')')<CR>
 "------------------------------------------------------------------------
 "------------------------------------------------------------------------
 "Pair function, not use
@@ -1347,6 +1379,7 @@ set completeopt=longest,menu
 " ----------------------------------------------
 "  this work
 set clipboard=unnamed " copy to the system clipboard
+set clipboard+=unnamedplus
 " ----------------------------------------------
 """ cannot use this in the terminal vim
 " bashcommand
@@ -1407,6 +1440,7 @@ set noswapfile
 "
 if has("gui_macvim")
 	set macmeta
+	set macligatures
 endif
 "-------------------------------------------------
 "For more color 
