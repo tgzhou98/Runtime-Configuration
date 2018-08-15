@@ -16,7 +16,7 @@
 # /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
 # add nvidia cuda path , only work with apple-clang
 #export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS"
-export PATH="/Users/zhoutiangang/anaconda3/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:${PATH}"
+export PATH="${HOME}/.cargo/bin:/Users/zhoutiangang/anaconda3/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:${PATH}"
 
 #export PATH="${PATH}"
 
@@ -98,20 +98,8 @@ fo() {
     [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
   fi
 }
-# vf - fuzzy open with vim from anywhere
-# ex: vf word1 word2 ... (even part of a file name)
-# zsh autoload function
-vf() {
-  local files
 
-  files=(${(f)"$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1 -m)"})
 
-  if [[ -n $files ]]
-  then
-     vim -- $files
-     print -l $files[1]
-  fi
-}
 # fuzzy grep open via ag
 vg() {
   local file
@@ -120,7 +108,7 @@ vg() {
 
   if [[ -n $file ]]
   then
-     vim $file
+     ${EDITOR:-nvim} $file
   fi
 }
 # fd - cd to selected directory
@@ -136,20 +124,39 @@ fda() {
   local dir
   dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
 }
+
+
+# vf - fuzzy open with vim from anywhere
+# ex: vf word1 word2 ... (even part of a file name)
+# zsh autoload function
+vf() {
+  local files
+
+  files=(${(f)"$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1 -m)"})
+
+  if [[ -n $files ]]
+  then
+     vim -- $files
+     print -l $files[1]
+  fi
+}
+
 # fdr - cd to selected parent directory
 fdr() {
-  local declare dirs=()
-  get_parent_dirs() {
-    if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
-    if [[ "${1}" == '/' ]]; then
-      for _dir in "${dirs[@]}"; do echo $_dir; done
-    else
-      get_parent_dirs $(dirname "$1")
-    fi
-  }
+  # Change the first line to coperate with zsh
+  local declare dirs=
   local DIR=$(get_parent_dirs $(realpath "${1:-$PWD}") | fzf-tmux --tac)
   cd "$DIR"
 }
+get_parent_dirs() {
+if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
+if [[ "${1}" == '/' ]]; then
+  for _dir in "${dirs[@]}"; do echo $_dir; done
+else
+  get_parent_dirs $(dirname "$1")
+fi
+}
+
 # cf - fuzzy cd from anywhere
 # ex: cf word1 word2 ... (even part of a file name)
 # zsh autoload function
@@ -209,7 +216,12 @@ j() {
     cd "$(autojump -s | sed '/_____/Q; s/^[0-9,.:]*\s*//' |  fzf --height 40% --nth 1.. --reverse --inline-info +s --tac --query "${*##-* }" )"
 }
 
-
+# FZF with preview using highlight
+export FZF_DEFAULT_OPTS="--height 60% --layout=reverse --preview '(highlight -O ansi {} || cat {}) 2> /dev/null | head -500'"
+# FZF with rg as default command
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*" --glob "!.svn/*" --glob "!.idea/*" --glob "!.vscode/*" --glob "!.mypy_cache/*" --glob "!build/*"'
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
 #  ---------------------------------------------------------------------------

@@ -1,4 +1,3 @@
-inoremap jk <ESC>
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
 nmap gh ^
