@@ -15,8 +15,9 @@
 # put the /usr/local/opt/coreutils/libexec/gnubin into the /etc/paths because 
 # /Users/zhoutiangang/.antigen/bundles/robbyrussell/oh-my-zsh/plugins/heroku   decrepit
 # add nvidia cuda path , only work with apple-clang
-#export PATH="/usr/local/opt/llvm/bin:$PATH:/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS"
+export PATH="/Developer/NVIDIA/CUDA-8.0/bin:/Library/TeX/texbin:/Applications/MATLAB_R2017a.app/bin:/Applications/MATLAB_R2017a.app/bin/maci64:/Applications/Mathematica.app/Contents/MacOS:/Applications/Alacritty.app/Contents/MacOS:$PATH"
 export PATH="${HOME}/.cargo/bin:/Users/zhoutiangang/anaconda3/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:${PATH}"
+source ~/anaconda3/bin/activate
 
 #export PATH="${PATH}"
 
@@ -288,9 +289,12 @@ alias exfile='function func() {cd ~/Virtual\ Machine/Exchange\ Files/};func'
 alias mvexfile='function func() {mv $1 ~/Virtual\ Machine/Exchange\ Files/};func'
 alias cpexfile='function func() {cp $1 ~/Virtual\ Machine/Exchange\ Files/};func'
 alias myvm='function func() {ssh tgzhou@192.168.166.$1};func'
-alias group_mach='ssh -X tgzhou@162.105.151.122'
-alias group_mach_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.122'
-alias group_mach_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.122'
+alias luttinger='ssh -X tgzhou@162.105.151.122'
+alias luttinger_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.122'
+alias luttinger_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.122'
+alias thouless='ssh -X tgzhou@162.105.151.110'
+alias thouless_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.110'
+alias thouless_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.110'
 alias maxwell='ssh -X tgzhou@162.105.151.19'
 alias maxwell_jupyter='ssh -NL 8990:localhost:8990 tgzhou@162.105.151.19'
 alias maxwell_tensorboard='ssh -NL 16006:localhost:6006 tgzhou@162.105.151.19'
